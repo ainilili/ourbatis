@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="@{mapperLocation}.@{mapperName}">
+     <!--返回模型-->
+    <resultMap id="BaseResultMap" type="@{domainPackage}.@{className}">
+
+		@{
+			datas:primaryFields,
+			elem:elem,
+			type:foreach,
+			render:~<id column="@{elem.columnName}" jdbcType="@{elem.dbType}" property="@{elem.fieldName}" />~
+		}#
+		 @{
+			datas:normalFields,
+			elem:elem,
+			type:foreach,
+			render:~
+		<result column="@{elem.columnName}" jdbcType="@{elem.dbType}" property="@{elem.fieldName}" />
+		~
+		}#
+
+    </resultMap>
+
+   <sql id="Base_Column_List">
+        @{
+			datas:fields,
+			elem:elem,
+			split:",",
+			type:foreach,
+			render:"`@{elem.columnName}`"
+		}#
+    </sql>
+
+ <!-- 根据主键查询 -->
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from @{tableName}
+        where 1 = 1 
+		@{
+			datas:primaryFields,
+			elem:elem,
+			type:foreach,
+			render:~
+			and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+		~
+		}#
+		
+    </select>
+    <!-- 根据实体查询单条 -->
+    <select id="selectByEntity" parameterType="@{domainPackage}.@{className}" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from @{tableName}
+        where 1 = 1
+		@{
+			datas:fields,
+			elem:elem,
+			type:foreach,
+			render:~
+		<if test="@{elem.fieldName} != null" >
+            and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+        </if>
+		~
+		}#
+
+        limit 1
+    </select>
+    
+    <!-- 根据实体查询多条 -->
+    <select id="selectByEntityList" parameterType="@{domainPackage}.@{className}" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from @{tableName}
+        where 1 = 1
+         @{
+			datas:fields,
+			elem:elem,
+			type:foreach,
+			render:~
+		<if test="@{elem.fieldName} != null" >
+            and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+        </if>
+		~
+		}#
+
+    </select>
+    
+     <!-- 根据实体查询ID -->
+    <select id="selectById" parameterType="@{domainPackage}.@{className}" resultType="java.lang.String">
+        select 
+       @{
+			datas:primaryFields,
+			elem:elem,
+                        split:",",
+			type:foreach,
+			render:"@{elem.fieldName}"
+		}#
+
+         from @{tableName}
+        where 1 = 1
+         @{
+			datas:fields,
+			elem:elem,
+			type:foreach,
+			render:~
+		<if test="@{elem.fieldName} != null" >
+            and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+        </if>
+		~
+		}#
+
+         limit 1
+    </select>
+    
+       <!-- 根据实体查询IDs-->
+    <select id="selectByIds" parameterType="@{domainPackage}.@{className}" resultType="java.lang.String">
+        select 
+ @{
+			datas:primaryFields,
+			elem:elem,
+                        split:",",
+			type:foreach,
+			render:"@{elem.fieldName}"
+		}#
+
+      from @{tableName}
+        where 1 = 1
+        @{
+			datas:fields,
+			elem:elem,
+			type:foreach,
+			render:~
+		<if test="@{elem.fieldName} != null" >
+            and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+        </if>
+		~
+		}#
+
+    </select>
+    
+    <!-- 根据主键删除 -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete 
+		from @{tableName} 
+		where 1=1 
+		@{
+			datas:primaryFields,
+			elem:elem,
+			type:foreach,
+			render:~
+		and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+		~
+		}#
+    </delete>
+	
+    <!--  插入单条记录（全字段）  -->
+    <insert id="insert" parameterType="@{domainPackage}.@{className}" >
+        insert into @{tableName} (
+          @{
+			datas:fields,
+			elem:elem,
+			split:",",
+			type:foreach,
+			render:"`@{elem.columnName}`"
+		}#
+
+        )
+        values (
+		@{
+			datas:fields,
+			elem:elem,
+			split:",",
+			type:foreach,
+			render:"#{@{elem.fieldName},jdbcType=@{elem.dbType}}"
+		}#
+        )
+    </insert>
+	
+       <!--  插入单条记录（字段为空则不添加）  -->
+    <insert id="insertSelective" parameterType="@{domainPackage}.@{className}" >
+        insert into @{tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+		@{
+			datas:primaryFields,
+			elem:elem,
+			split:",",
+			type:foreach,
+			render:~
+			`@{elem.columnName}`
+			~
+		}#
+		@{
+			datas:normalFields,
+			elem:elem,
+			type:foreach,
+			render:~
+		<if test="@{elem.fieldName} != null" >
+            , `@{elem.columnName}`
+        </if>
+		~
+		}#
+
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+		@{
+			datas:primaryFields,
+			elem:elem,
+			split:",",
+			type:foreach,
+			render:~		
+			#{@{elem.fieldName},jdbcType=@{elem.dbType}}
+			~
+		}#
+		@{
+			datas:normalFields,
+			elem:elem,
+			type:foreach,
+			render:~
+		<if test="@{elem.fieldName} != null" >
+            , #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+        </if>
+		~
+		}#
+       
+        </trim>
+    </insert>
+	
+   <!-- 根据主键修改  -->
+    <update id="updateByPrimaryKey" parameterType="@{domainPackage}.@{className}">
+        update @{tableName}
+        <set>
+		@{
+			datas:normalFields,
+			elem:elem,
+			type:foreach,
+			render:~
+		<if test="@{elem.fieldName} != null" >
+            `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}},
+        </if>
+		~
+		}#
+        
+        </set>
+        where 1=1 
+		@{
+			datas:primaryFields,
+			elem:elem,
+			type:foreach,
+			render:~
+		and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+		~
+		}#
+    </update>
+    
+       <!--批量插入-->
+    <insert id="insertBatch" parameterType="java.util.List" >  
+        insert into @{tableName} (
+               <include refid="Base_Column_List" />         
+
+        )
+        values 
+        <foreach collection="list" index="index" item="item" separator=",">  
+        (
+		@{
+			datas:fields,
+			elem:elem,
+			split:",",
+			type:foreach,
+			render:~
+			#{item.@{elem.fieldName},jdbcType=@{elem.dbType}}
+		~
+		}#
+
+        )
+        </foreach>
+      </insert>
+     <!--批量修改-->
+    <update id="updateBatch" parameterType="java.util.List">  
+        <foreach  collection="list" index="index" item="item"  separator=";">     
+           update @{tableName}
+        set 
+		@{
+			datas:normalFields,
+			elem:elem,
+			split:",",
+			type:foreach,
+			render:~
+		`@{elem.columnName}` = #{item.@{elem.fieldName},jdbcType=@{elem.dbType}}~
+		}#
+        where 1=1 
+		@{
+			datas:primaryFields,
+			elem:elem,
+			type:foreach,
+			render:~
+		and `@{elem.columnName}` = #{item.@{elem.fieldName},jdbcType=@{elem.dbType}}
+		~
+		}#
+        </foreach>
+    </update>
+	
+     <!--根据主键批量删除-->
+    <delete id="deleteBatch" parameterType="java.util.List"> 
+        delete from @{tableName} where id in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">  
+            #{item}  
+        </foreach> 
+    </delete>
+ 
+  <!--根据某些条件删除-->
+    <delete id="deleteByEntity" parameterType="@{domainPackage}.@{className}"> 
+        delete from @{tableName} where  1 = 1
+          @{
+			datas:fields,
+			elem:elem,
+			type:foreach,
+			render:~
+		<if test="@{elem.fieldName} != null" >
+            and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+        </if>
+		~
+		}#
+
+    </delete>
+    
+    
+
+</mapper>
