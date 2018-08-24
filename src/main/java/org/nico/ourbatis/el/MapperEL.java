@@ -36,6 +36,9 @@ public class MapperEL {
 	 */
 	private String suffix;
 	
+	private String superPrefix;
+	private String superSuffix;
+	
 	/**
 	 * 实例化
 	 * 
@@ -46,7 +49,9 @@ public class MapperEL {
 	 */
 	public MapperEL(String prefix, String suffix) {
 		this.prefix = prefix;
+		this.superPrefix = prefix + "{";
 		this.suffix = suffix;
+		this.superSuffix = "}" + suffix;
 	}
 	
 	/**
@@ -77,15 +82,15 @@ public class MapperEL {
 		
 		//渲染循环语法
 		for(int index = 0; index < length; index ++) {
-			headNode = text.indexOf(prefix, index);
+			headNode = text.indexOf(superPrefix, index);
 			if(headNode != -1) {
 				index = headNode;
-				tailNode = text.indexOf(suffix, index);
+				tailNode = text.indexOf(superSuffix, index);
 				if(tailNode != -1) {
-					String parserResult = parser(datas, text.substring(headNode + prefix.length(), tailNode));
+					String parserResult = parser(datas, text.substring(headNode + superPrefix.length(), tailNode));
 					index += parserResult.length();
 					length += parserResult.length() - (tailNode - headNode);
-					text = text.substring(0, headNode) + parserResult + text.substring(tailNode + suffix.length());
+					text = text.substring(0, headNode) + parserResult + text.substring(tailNode + superSuffix.length());
 				}
 			}else {
 				break;
@@ -378,7 +383,7 @@ public class MapperEL {
 	
 	public static void main(String[] args) {
 		
-		String str = "@{abc} + @{abcd}";
+		String str = "@{abc}# + @{abcd}#";
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("abc", "A");
 		map.put("abcd", "a");

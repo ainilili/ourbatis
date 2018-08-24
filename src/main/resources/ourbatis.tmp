@@ -4,31 +4,32 @@
      <!--返回模型-->
     <resultMap id="BaseResultMap" type="@{domainPackage}.@{className}">
 
-		@{
-			datas:primaryFields,
+		@{{
+			datas:pcolumns,
 			elem:elem,
 			type:foreach,
-			render:~<id column="@{elem.columnName}" jdbcType="@{elem.dbType}" property="@{elem.fieldName}" />~
-		}#
-		 @{
-			datas:normalFields,
+			render:~<id column="@{elem.jdbcName}" jdbcType="@{elem.dbType}" property="@{elem.javaName}" />
+			~
+		}}#
+		 @{{
+			datas:columns,
 			elem:elem,
 			type:foreach,
 			render:~
-		<result column="@{elem.columnName}" jdbcType="@{elem.dbType}" property="@{elem.fieldName}" />
+		<result column="@{elem.jdbcName}" jdbcType="@{elem.dbType}" property="@{elem.javaName}" />
 		~
-		}#
+		}}#
 
     </resultMap>
 
    <sql id="Base_Column_List">
-        @{
-			datas:fields,
+        @{{
+			datas:columns,
 			elem:elem,
 			split:",",
 			type:foreach,
-			render:"`@{elem.columnName}`"
-		}#
+			render:"`@{elem.jdbcName}`"
+		}}#
     </sql>
 
  <!-- 根据主键查询 -->
@@ -37,14 +38,14 @@
         <include refid="Base_Column_List" />
         from @{tableName}
         where 1 = 1 
-		@{
-			datas:primaryFields,
+		@{{
+			datas:pcolumns,
 			elem:elem,
 			type:foreach,
 			render:~
-			and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+			and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
 		~
-		}#
+		}}#
 		
     </select>
     <!-- 根据实体查询单条 -->
@@ -53,16 +54,16 @@
         <include refid="Base_Column_List" />
         from @{tableName}
         where 1 = 1
-		@{
-			datas:fields,
+		@{{
+			datas:columns,
 			elem:elem,
 			type:foreach,
 			render:~
-		<if test="@{elem.fieldName} != null" >
-            and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+		<if test="@{elem.javaName} != null" >
+            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
         </if>
 		~
-		}#
+		}}#
 
         limit 1
     </select>
@@ -73,42 +74,42 @@
         <include refid="Base_Column_List" />
         from @{tableName}
         where 1 = 1
-         @{
-			datas:fields,
+         @{{
+			datas:columns,
 			elem:elem,
 			type:foreach,
 			render:~
-		<if test="@{elem.fieldName} != null" >
-            and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+		<if test="@{elem.javaName} != null" >
+            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
         </if>
 		~
-		}#
+		}}#
 
     </select>
     
      <!-- 根据实体查询ID -->
     <select id="selectById" parameterType="@{domainPackage}.@{className}" resultType="java.lang.String">
         select 
-       @{
-			datas:primaryFields,
+       @{{
+			datas:pcolumns,
 			elem:elem,
                         split:",",
 			type:foreach,
-			render:"@{elem.fieldName}"
-		}#
+			render:"@{elem.javaName}"
+		}}#
 
          from @{tableName}
         where 1 = 1
-         @{
-			datas:fields,
+         @{{
+			datas:columns,
 			elem:elem,
 			type:foreach,
 			render:~
-		<if test="@{elem.fieldName} != null" >
-            and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+		<if test="@{elem.javaName} != null" >
+            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
         </if>
 		~
-		}#
+		}}#
 
          limit 1
     </select>
@@ -116,26 +117,26 @@
        <!-- 根据实体查询IDs-->
     <select id="selectByIds" parameterType="@{domainPackage}.@{className}" resultType="java.lang.String">
         select 
- @{
-			datas:primaryFields,
+ @{{
+			datas:pcolumns,
 			elem:elem,
                         split:",",
 			type:foreach,
-			render:"@{elem.fieldName}"
-		}#
+			render:"@{elem.javaName}"
+		}}#
 
       from @{tableName}
         where 1 = 1
-        @{
-			datas:fields,
+        @{{
+			datas:columns,
 			elem:elem,
 			type:foreach,
 			render:~
-		<if test="@{elem.fieldName} != null" >
-            and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+		<if test="@{elem.javaName} != null" >
+            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
         </if>
 		~
-		}#
+		}}#
 
     </select>
     
@@ -144,36 +145,36 @@
         delete 
 		from @{tableName} 
 		where 1=1 
-		@{
-			datas:primaryFields,
+		@{{
+			datas:pcolumns,
 			elem:elem,
 			type:foreach,
 			render:~
-		and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+		and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
 		~
-		}#
+		}}#
     </delete>
 	
     <!--  插入单条记录（全字段）  -->
     <insert id="insert" parameterType="@{domainPackage}.@{className}" >
         insert into @{tableName} (
-          @{
-			datas:fields,
+          @{{
+			datas:columns,
 			elem:elem,
 			split:",",
 			type:foreach,
-			render:"`@{elem.columnName}`"
-		}#
+			render:"`@{elem.jdbcName}`"
+		}}#
 
         )
         values (
-		@{
-			datas:fields,
+		@{{
+			datas:columns,
 			elem:elem,
 			split:",",
 			type:foreach,
-			render:"#{@{elem.fieldName},jdbcType=@{elem.dbType}}"
-		}#
+			render:"#{@{elem.javaName},jdbcType=@{elem.dbType}}"
+		}}#
         )
     </insert>
 	
@@ -181,49 +182,49 @@
     <insert id="insertSelective" parameterType="@{domainPackage}.@{className}" >
         insert into @{tableName}
         <trim prefix="(" suffix=")" suffixOverrides=",">
-		@{
-			datas:primaryFields,
+		@{{
+			datas:pcolumns,
 			elem:elem,
 			split:",",
 			type:foreach,
 			render:~
-			`@{elem.columnName}`
+			`@{elem.jdbcName}`
 			~
-		}#
-		@{
-			datas:normalFields,
+		}}#
+		@{{
+			datas:columns,
 			elem:elem,
 			type:foreach,
 			render:~
-		<if test="@{elem.fieldName} != null" >
-            , `@{elem.columnName}`
+		<if test="@{elem.javaName} != null" >
+            , `@{elem.jdbcName}`
         </if>
 		~
-		}#
+		}}#
 
 
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
 
-		@{
-			datas:primaryFields,
+		@{{
+			datas:pcolumns,
 			elem:elem,
 			split:",",
 			type:foreach,
 			render:~		
-			#{@{elem.fieldName},jdbcType=@{elem.dbType}}
+			#{@{elem.javaName},jdbcType=@{elem.dbType}}
 			~
-		}#
-		@{
-			datas:normalFields,
+		}}#
+		@{{
+			datas:columns,
 			elem:elem,
 			type:foreach,
 			render:~
-		<if test="@{elem.fieldName} != null" >
-            , #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+		<if test="@{elem.javaName} != null" >
+            , #{@{elem.javaName},jdbcType=@{elem.dbType}}
         </if>
 		~
-		}#
+		}}#
        
         </trim>
     </insert>
@@ -232,27 +233,27 @@
     <update id="updateByPrimaryKey" parameterType="@{domainPackage}.@{className}">
         update @{tableName}
         <set>
-		@{
-			datas:normalFields,
+		@{{
+			datas:columns,
 			elem:elem,
 			type:foreach,
 			render:~
-		<if test="@{elem.fieldName} != null" >
-            `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}},
+		<if test="@{elem.javaName} != null" >
+            `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}},
         </if>
 		~
-		}#
+		}}#
         
         </set>
         where 1=1 
-		@{
-			datas:primaryFields,
+		@{{
+			datas:pcolumns,
 			elem:elem,
 			type:foreach,
 			render:~
-		and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+		and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
 		~
-		}#
+		}}#
     </update>
     
        <!--批量插入-->
@@ -264,15 +265,15 @@
         values 
         <foreach collection="list" index="index" item="item" separator=",">  
         (
-		@{
-			datas:fields,
+		@{{
+			datas:columns,
 			elem:elem,
 			split:",",
 			type:foreach,
 			render:~
-			#{item.@{elem.fieldName},jdbcType=@{elem.dbType}}
+			#{item.@{elem.javaName},jdbcType=@{elem.dbType}}
 		~
-		}#
+		}}#
 
         )
         </foreach>
@@ -282,23 +283,23 @@
         <foreach  collection="list" index="index" item="item"  separator=";">     
            update @{tableName}
         set 
-		@{
-			datas:normalFields,
+		@{{
+			datas:columns,
 			elem:elem,
 			split:",",
 			type:foreach,
 			render:~
-		`@{elem.columnName}` = #{item.@{elem.fieldName},jdbcType=@{elem.dbType}}~
-		}#
+		`@{elem.jdbcName}` = #{item.@{elem.javaName},jdbcType=@{elem.dbType}}~
+		}}#
         where 1=1 
-		@{
-			datas:primaryFields,
+		@{{
+			datas:pcolumns,
 			elem:elem,
 			type:foreach,
 			render:~
-		and `@{elem.columnName}` = #{item.@{elem.fieldName},jdbcType=@{elem.dbType}}
+		and `@{elem.jdbcName}` = #{item.@{elem.javaName},jdbcType=@{elem.dbType}}
 		~
-		}#
+		}}#
         </foreach>
     </update>
 	
@@ -313,16 +314,16 @@
   <!--根据某些条件删除-->
     <delete id="deleteByEntity" parameterType="@{domainPackage}.@{className}"> 
         delete from @{tableName} where  1 = 1
-          @{
-			datas:fields,
+          @{{
+			datas:columns,
 			elem:elem,
 			type:foreach,
 			render:~
-		<if test="@{elem.fieldName} != null" >
-            and `@{elem.columnName}` = #{@{elem.fieldName},jdbcType=@{elem.dbType}}
+		<if test="@{elem.javaName} != null" >
+            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
         </if>
 		~
-		}#
+		}}#
 
     </delete>
     
