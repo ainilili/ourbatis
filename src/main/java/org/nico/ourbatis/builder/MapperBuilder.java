@@ -19,6 +19,7 @@ public class MapperBuilder {
 
 	public String builder(String mapperUri) {
 		String mapperContent = StreamUtils.convertToString(mapperUri);
+		mapperContent = mapperContent == null ? "" : mapperContent;
 		baseTemplateContent = baseTemplateContent.replaceAll("###ourbatis###", mapperContent);
 		return baseTemplateContent;
 	}

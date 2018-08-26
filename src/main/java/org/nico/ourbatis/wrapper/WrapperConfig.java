@@ -11,7 +11,7 @@ public class WrapperConfig {
 		private static final long serialVersionUID = 3388503832916481034L;
 	{
 		put(String.class, "VARCHAR");
-		put(Integer.class, "INT");
+		put(Integer.class, "INTEGER");
 	}};
 	
 	public static final List<Wrapper<String>> JDBC_NAME_WRAPPERS = new ArrayList<Wrapper<String>>();

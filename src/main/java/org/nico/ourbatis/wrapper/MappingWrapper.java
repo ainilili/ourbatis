@@ -1,4 +1,4 @@
-package org.nico.ourbatis.mapping;
+package org.nico.ourbatis.wrapper;
 
 import java.util.ArrayList;
 import java.util.List;

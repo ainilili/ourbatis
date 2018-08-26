@@ -20,7 +20,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
  * @author nico
  * @time 2018-08-23 18:22
  */
-public class LoaderMapper {
+public class MapperLoader {
 	
 	private Log log = new Log4j2Impl(this.getClass().getName());
 	
@@ -30,7 +30,7 @@ public class LoaderMapper {
 	
 	private Configuration configuration;
 	
-	public LoaderMapper(SqlSessionFactory sqlSessionFactory) {
+	public MapperLoader(SqlSessionFactory sqlSessionFactory) {
 		this.sqlSessionFactory = sqlSessionFactory;
 		this.configuration = sqlSessionFactory.getConfiguration();
 		this.mappers = new ConcurrentLinkedQueue<String>();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="@{mapperClassName}">
      <!--返回模型-->
     <resultMap id="BaseResultMap" type="@{domainClassName}">
@@ -33,7 +33,7 @@
     </sql>
 
  <!-- 根据主键查询 -->
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Object" resultMap="BaseResultMap">
         select 
         <include refid="Base_Column_List" />
         from @{tableName}
@@ -141,7 +141,7 @@
     </select>
     
     <!-- 根据主键删除 -->
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Object">
         delete 
 		from @{tableName} 
 		where 1=1 
