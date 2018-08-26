@@ -1,7 +1,10 @@
 package org.nico.test;
 
+import org.nico.ourbatis.annotation.RenderPrimary;
+
 public class TestEntity {
 
+	@RenderPrimary
 	private String id;
 	
 	private Integer age;

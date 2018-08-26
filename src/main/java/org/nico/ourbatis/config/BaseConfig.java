@@ -4,8 +4,6 @@ public class BaseConfig {
 
 	public static String baseTemplateUri = "ourbatis.tmp";
 	
-	public static String prefix = "@{";
-	
-	public static String suffix = "}#";
+	public static String mapperPacketUri = "org.nico.ourbatis.mapper";
 	
 }

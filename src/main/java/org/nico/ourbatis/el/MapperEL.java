@@ -2,13 +2,10 @@ package org.nico.ourbatis.el;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 
 import org.nico.noson.Noson;
 import org.nico.noson.util.string.StringUtils;
@@ -47,10 +44,10 @@ public class MapperEL {
 	 * @param suffix 
 	 * 			后缀
 	 */
-	public MapperEL(String prefix, String suffix) {
-		this.prefix = prefix;
+	public MapperEL() {
+		this.prefix = "@{";
 		this.superPrefix = prefix + "{";
-		this.suffix = suffix;
+		this.suffix = "}#";
 		this.superSuffix = "}" + suffix;
 	}
 	
@@ -381,14 +378,4 @@ public class MapperEL {
 		
 	}
 	
-	public static void main(String[] args) {
-		
-		String str = "@{abc}# + @{abcd}#";
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("abc", "A");
-		map.put("abcd", "a");
-		MapperEL eh = new MapperEL("@{", "}#");
-		System.out.println(eh.render(map, str));
-		
-	}
 }

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="@{mapperLocation}.@{mapperName}">
+<mapper namespace="@{mapperClassName}">
      <!--返回模型-->
-    <resultMap id="BaseResultMap" type="@{domainPackage}.@{className}">
+    <resultMap id="BaseResultMap" type="@{domainClassName}">
 
 		@{{
 			datas:pcolumns,
 			elem:elem,
 			type:foreach,
-			render:~<id column="@{elem.jdbcName}" jdbcType="@{elem.dbType}" property="@{elem.javaName}" />
+			render:~<id column="@{elem.jdbcName}" jdbcType="@{elem.jdbcType}" property="@{elem.javaName}" />
 			~
 		}}#
 		 @{{
@@ -16,7 +16,7 @@
 			elem:elem,
 			type:foreach,
 			render:~
-		<result column="@{elem.jdbcName}" jdbcType="@{elem.dbType}" property="@{elem.javaName}" />
+		<result column="@{elem.jdbcName}" jdbcType="@{elem.jdbcType}" property="@{elem.javaName}" />
 		~
 		}}#
 
@@ -43,13 +43,13 @@
 			elem:elem,
 			type:foreach,
 			render:~
-			and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
+			and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.jdbcType}}
 		~
 		}}#
 		
     </select>
     <!-- 根据实体查询单条 -->
-    <select id="selectByEntity" parameterType="@{domainPackage}.@{className}" resultMap="BaseResultMap">
+    <select id="selectByEntity" parameterType="@{domainClassName}" resultMap="BaseResultMap">
         select 
         <include refid="Base_Column_List" />
         from @{tableName}
@@ -60,7 +60,7 @@
 			type:foreach,
 			render:~
 		<if test="@{elem.javaName} != null" >
-            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
+            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.jdbcType}}
         </if>
 		~
 		}}#
@@ -69,7 +69,7 @@
     </select>
     
     <!-- 根据实体查询多条 -->
-    <select id="selectByEntityList" parameterType="@{domainPackage}.@{className}" resultMap="BaseResultMap">
+    <select id="selectByEntityList" parameterType="@{domainClassName}" resultMap="BaseResultMap">
         select 
         <include refid="Base_Column_List" />
         from @{tableName}
@@ -80,7 +80,7 @@
 			type:foreach,
 			render:~
 		<if test="@{elem.javaName} != null" >
-            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
+            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.jdbcType}}
         </if>
 		~
 		}}#
@@ -88,7 +88,7 @@
     </select>
     
      <!-- 根据实体查询ID -->
-    <select id="selectById" parameterType="@{domainPackage}.@{className}" resultType="java.lang.String">
+    <select id="selectById" parameterType="@{domainClassName}" resultType="java.lang.String">
         select 
        @{{
 			datas:pcolumns,
@@ -106,7 +106,7 @@
 			type:foreach,
 			render:~
 		<if test="@{elem.javaName} != null" >
-            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
+            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.jdbcType}}
         </if>
 		~
 		}}#
@@ -115,7 +115,7 @@
     </select>
     
        <!-- 根据实体查询IDs-->
-    <select id="selectByIds" parameterType="@{domainPackage}.@{className}" resultType="java.lang.String">
+    <select id="selectByIds" parameterType="@{domainClassName}" resultType="java.lang.String">
         select 
  @{{
 			datas:pcolumns,
@@ -133,7 +133,7 @@
 			type:foreach,
 			render:~
 		<if test="@{elem.javaName} != null" >
-            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
+            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.jdbcType}}
         </if>
 		~
 		}}#
@@ -150,13 +150,13 @@
 			elem:elem,
 			type:foreach,
 			render:~
-		and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
+		and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.jdbcType}}
 		~
 		}}#
     </delete>
 	
     <!--  插入单条记录（全字段）  -->
-    <insert id="insert" parameterType="@{domainPackage}.@{className}" >
+    <insert id="insert" parameterType="@{domainClassName}" >
         insert into @{tableName} (
           @{{
 			datas:columns,
@@ -173,13 +173,13 @@
 			elem:elem,
 			split:",",
 			type:foreach,
-			render:"#{@{elem.javaName},jdbcType=@{elem.dbType}}"
+			render:"#{@{elem.javaName},jdbcType=@{elem.jdbcType}}"
 		}}#
         )
     </insert>
 	
        <!--  插入单条记录（字段为空则不添加）  -->
-    <insert id="insertSelective" parameterType="@{domainPackage}.@{className}" >
+    <insert id="insertSelective" parameterType="@{domainClassName}" >
         insert into @{tableName}
         <trim prefix="(" suffix=")" suffixOverrides=",">
 		@{{
@@ -212,7 +212,7 @@
 			split:",",
 			type:foreach,
 			render:~		
-			#{@{elem.javaName},jdbcType=@{elem.dbType}}
+			#{@{elem.javaName},jdbcType=@{elem.jdbcType}}
 			~
 		}}#
 		@{{
@@ -221,7 +221,7 @@
 			type:foreach,
 			render:~
 		<if test="@{elem.javaName} != null" >
-            , #{@{elem.javaName},jdbcType=@{elem.dbType}}
+            , #{@{elem.javaName},jdbcType=@{elem.jdbcType}}
         </if>
 		~
 		}}#
@@ -230,7 +230,7 @@
     </insert>
 	
    <!-- 根据主键修改  -->
-    <update id="updateByPrimaryKey" parameterType="@{domainPackage}.@{className}">
+    <update id="updateByPrimaryKey" parameterType="@{domainClassName}">
         update @{tableName}
         <set>
 		@{{
@@ -239,7 +239,7 @@
 			type:foreach,
 			render:~
 		<if test="@{elem.javaName} != null" >
-            `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}},
+            `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.jdbcType}},
         </if>
 		~
 		}}#
@@ -251,7 +251,7 @@
 			elem:elem,
 			type:foreach,
 			render:~
-		and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
+		and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.jdbcType}}
 		~
 		}}#
     </update>
@@ -271,7 +271,7 @@
 			split:",",
 			type:foreach,
 			render:~
-			#{item.@{elem.javaName},jdbcType=@{elem.dbType}}
+			#{item.@{elem.javaName},jdbcType=@{elem.jdbcType}}
 		~
 		}}#
 
@@ -289,7 +289,7 @@
 			split:",",
 			type:foreach,
 			render:~
-		`@{elem.jdbcName}` = #{item.@{elem.javaName},jdbcType=@{elem.dbType}}~
+		`@{elem.jdbcName}` = #{item.@{elem.javaName},jdbcType=@{elem.jdbcType}}~
 		}}#
         where 1=1 
 		@{{
@@ -297,7 +297,7 @@
 			elem:elem,
 			type:foreach,
 			render:~
-		and `@{elem.jdbcName}` = #{item.@{elem.javaName},jdbcType=@{elem.dbType}}
+		and `@{elem.jdbcName}` = #{item.@{elem.javaName},jdbcType=@{elem.jdbcType}}
 		~
 		}}#
         </foreach>
@@ -312,7 +312,7 @@
     </delete>
  
   <!--根据某些条件删除-->
-    <delete id="deleteByEntity" parameterType="@{domainPackage}.@{className}"> 
+    <delete id="deleteByEntity" parameterType="@{domainClassName}"> 
         delete from @{tableName} where  1 = 1
           @{{
 			datas:columns,
@@ -320,13 +320,13 @@
 			type:foreach,
 			render:~
 		<if test="@{elem.javaName} != null" >
-            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.dbType}}
+            and `@{elem.jdbcName}` = #{@{elem.javaName},jdbcType=@{elem.jdbcType}}
         </if>
 		~
 		}}#
 
     </delete>
     
-    
+    ###ourbatis###
 
 </mapper>
