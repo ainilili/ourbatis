@@ -1,7 +1,5 @@
 package org.nico.ourbatis.wrapper;
 
-import java.util.List;
-
 /** 
  * 
  * @author nico
