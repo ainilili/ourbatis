@@ -37,22 +37,26 @@ public class Mapping {
 	public Table mappingTable(Class<?> domainClass){
 		Table table = new Table();
 		Field[] classFields = ReflactUtils.getFields(domainClass);
-		List<Column> columns = new ArrayList<Column>(classFields.length);
-		List<Column> pcolumns = new ArrayList<Column>(classFields.length);
+		List<Column> normalColumns = new ArrayList<Column>(classFields.length);
+		List<Column> primaryColumns = new ArrayList<Column>(classFields.length);
+		List<Column> allColumns = new ArrayList<Column>(classFields.length);
 		if(ArrayUtils.isNotEmpty(classFields)) {
 			for(Field field: classFields) {
 				if(! ReflactUtils.isRenderIgnore(field)) {
+					Column column = mappingColumnEntity(field);
 					if(ReflactUtils.isRenderPrimary(field)){
-						pcolumns.add(mappingColumnEntity(field));
+						primaryColumns.add(column);
 					}else{
-						columns.add(mappingColumnEntity(field));
+						normalColumns.add(column);
 					}
+					allColumns.add(column);
 				}
 			}
 		}
 		table.setTableName(tableNameWrapper.wrapping(domainClass));
-		table.setPcolumns(pcolumns);
-		table.setColumns(columns);
+		table.setPrimaryColumns(primaryColumns);
+		table.setNormalColumns(normalColumns);
+		table.setAllColumns(allColumns);
 		table.setDomainClass(domainClass);
 		table.setDomainClassName(domainClass.getName());
 		table.setMapperClassName(BaseConfig.mapperPacketUri + "." + mapperNameWrapper.wrapping(domainClass));

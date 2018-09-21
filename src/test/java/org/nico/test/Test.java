@@ -7,6 +7,7 @@ import org.nico.noson.Noson;
 import org.nico.ourbatis.builder.MapperBuilder;
 import org.nico.ourbatis.config.BaseConfig;
 import org.nico.ourbatis.el.MapperEL;
+import org.nico.ourbatis.el.Noel;
 import org.nico.ourbatis.entity.Column;
 import org.nico.ourbatis.entity.Table;
 import org.nico.ourbatis.mapping.Mapping;
@@ -20,12 +21,17 @@ public class Test {
 		
 		Table table = mapping.mappingTable(TestEntity.class);
 		Map<String, Object> datas = Noson.convert(Noson.reversal(table), Map.class);
-		MapperEL mapperEL = new MapperEL();
-		String temp = StreamUtils.convertToString(BaseConfig.baseTemplateUri);
-		
-		String result = mapperEL.render(datas, temp);
-		MapperBuilder mapperTempBuilder = new MapperBuilder(result);
-		String renderMapper = mapperTempBuilder.builder("mapper/TestEntity.xml");
-		System.out.println(renderMapper);
+//		MapperEL mapperEL = new MapperEL();
+//		String temp = StreamUtils.convertToString(BaseConfig.baseTemplateUri);
+//		
+//		
+//		
+//		String result = mapperEL.render(datas, temp);
+//		MapperBuilder mapperTempBuilder = new MapperBuilder(result);
+//		String renderMapper = mapperTempBuilder.builder("mapper/TestEntity.xml");
+//		System.out.println(renderMapper);
+		String document = StreamUtils.convertToString(BaseConfig.baseTemplateUri);
+		Noel noel = new Noel();
+		System.out.println(noel.el(document, datas));
 	}
 }

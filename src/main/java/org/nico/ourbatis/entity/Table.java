@@ -19,9 +19,11 @@ public class Table {
 	
 	private String port;
 	
-	private List<Column> pcolumns;
+	private List<Column> primaryColumns;
 	
-	private List<Column> columns;
+	private List<Column> normalColumns;
+	
+	private List<Column> allColumns;
 	
 	private Class<?> domainClass;
 	
@@ -95,20 +97,28 @@ public class Table {
 		this.port = port;
 	}
 
-	public List<Column> getPcolumns() {
-		return pcolumns;
+	public List<Column> getPrimaryColumns() {
+		return primaryColumns;
 	}
 
-	public void setPcolumns(List<Column> pcolumns) {
-		this.pcolumns = pcolumns;
+	public void setPrimaryColumns(List<Column> primaryColumns) {
+		this.primaryColumns = primaryColumns;
 	}
 
-	public List<Column> getColumns() {
-		return columns;
+	public List<Column> getNormalColumns() {
+		return normalColumns;
 	}
 
-	public void setColumns(List<Column> columns) {
-		this.columns = columns;
+	public void setNormalColumns(List<Column> normalColumns) {
+		this.normalColumns = normalColumns;
 	}
-	
+
+	public List<Column> getAllColumns() {
+		return allColumns;
+	}
+
+	public void setAllColumns(List<Column> allColumns) {
+		this.allColumns = allColumns;
+	}
+
 }
