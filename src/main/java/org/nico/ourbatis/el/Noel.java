@@ -1,14 +1,9 @@
 package org.nico.ourbatis.el;
 
-import java.util.List;
 import java.util.Map;
 
 import org.nico.ourbatis.config.BaseConfig;
-import org.nico.seeker.dom.DomBean;
-import org.nico.seeker.scan.SeekerScanner;
 import org.nico.seeker.scan.impl.NicoScanner;
-import org.nico.seeker.searcher.SeekerSearcher;
-import org.nico.seeker.searcher.impl.NicoSearcher;
 
 public class Noel {
 	

@@ -2,6 +2,7 @@ package org.nico.ourbatis.el;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class NoelLooper {
 
@@ -29,7 +30,7 @@ public class NoelLooper {
 	}
 	
 	public boolean isLast() {
-		return pos == list.size();
+		return pos == list.size() - 1;
 	}
 	
 	public String split() {

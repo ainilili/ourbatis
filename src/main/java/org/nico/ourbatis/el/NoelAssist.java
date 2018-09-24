@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.nico.ourbatis.config.BaseConfig;
 import org.nico.ourbatis.exception.OurbatisException;
 import org.nico.ourbatis.utils.AssertUtils;
 import org.nico.seeker.dom.DomBean;
@@ -23,10 +22,11 @@ public class NoelAssist {
 	
 	public String propertiesAssist(String body) {
 		StringBuilder builder = new StringBuilder();
+		String rended = body;
 		for(Entry<String, Object> entry: datas.entrySet()) {
-			String rended = render.rending(entry.getValue(), body, entry.getKey());
-			builder.append(rended);
+			rended = render.rending(datas, rended, entry.getKey());
 		}
+		builder.append(rended);
 		return builder.toString();
 	}
 	
@@ -43,13 +43,13 @@ public class NoelAssist {
 				NoelLooper looper = new NoelLooper((List<?>) list);
 				looper
 				.split(split)
-					.each(o -> {
-						String rended = render.rending(o, body, varKey);
-						if(! looper.isLast() && looper.split() != null) {
-							rended += looper.split();
-						}
-						builder.append(rended);
-					});
+				.each(o -> {
+					String rended = render.rending(o, body, varKey);
+					if(! looper.isLast() && looper.split() != null) {
+						rended += looper.split();
+					}
+					builder.append(rended);
+				});
 				return builder.toString();
 			}else {
 				throw new OurbatisException("The object of the loop is not a collection.");

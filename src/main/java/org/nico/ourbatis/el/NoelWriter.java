@@ -25,11 +25,16 @@ public class NoelWriter {
 	}
 	
 	public NoelWriter write(Consumer<DomBean> specialCallBack){
-		write(this.documents, specialCallBack);
+		write(this.documents, specialCallBack, 0);
 		return this;
 	}
 	
-	private NoelWriter write(List<DomBean> documents, Consumer<DomBean> specialCallBack){
+	private NoelWriter write(List<DomBean> documents, Consumer<DomBean> specialCallBack, int n){
+		StringBuilder tab = new StringBuilder();
+		int tn = n;
+		while(tn-- > 0){
+			tab.append("\t");
+		}
 		for(DomBean d: documents){
 			if(BaseConfig.targets.contains(d.getPrefix())) {
 				specialCallBack.accept(d);
@@ -39,16 +44,22 @@ public class NoelWriter {
 					paramStr = d.getParamStr().replaceAll("&", " ");
 				}
 				if(d.isSelfSealing()){
+					builder.append(tab);
 					builder.append("<" + d.getPrefix() + " " + paramStr + " />");
+					builder.append("\n");
 				}else{
+					builder.append(tab);
 					builder.append("<" + d.getPrefix() + " " + paramStr + " >");
+					builder.append("\n");
 					if(d.getDomProcessers() != null && d.getDomProcessers().size() > 0){
-						write(d.getDomProcessers(), specialCallBack);
+						write(d.getDomProcessers(), specialCallBack, n + 1);
 					}else{
 						builder.append(d.getBody());
 					}
 					builder.append("</"+ d.getPrefix() + ">");
+					builder.append("\n");
 				}
+				
 			}
 		}
 		return this;

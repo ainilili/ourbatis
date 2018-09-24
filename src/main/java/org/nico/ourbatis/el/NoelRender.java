@@ -2,33 +2,76 @@ package org.nico.ourbatis.el;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class NoelRender {
 
 	private String suffix;
-	
+
 	private String prefix;
 	
-	public NoelRender(String suffix, String prefix) {
+	private String split;
+	
+	private final static String BLANK = "";
+	
+	public NoelRender(String prefix, String suffix) {
 		this.suffix = suffix;
 		this.prefix = prefix;
+		this.split = ".";
+	}
+	
+	public NoelRender(String prefix, String suffix, String split) {
+		this.suffix = suffix;
+		this.prefix = prefix;
+		this.split = split;
+	}
+	
+	public String rending(Object o, String text, String key) {
+		String prefixKey = prefix + key;
+		String assemblySplit = prefixKey + split;
+		String assmeblySuffix = prefixKey + suffix;
+		
+		String[] segments = splitRender(text, prefixKey);
+		StringBuilder result = new StringBuilder();
+		
+		Arrays.asList(segments).forEach(target -> {
+			if(target.startsWith(assemblySplit) || target.startsWith(assmeblySuffix)) {
+				target = target.substring(prefix.length(), target.length() - suffix.length());
+				
+				int indexof = target.indexOf(split);
+				if(indexof != -1) {
+					target = getValueWrapper(getChain(o, target));
+				}else {
+					target = getValueWrapper(getValue(o, target));
+				}
+			}
+			result.append(target);
+		});
+		return result.toString();
 	}
 
 	public String[] splitRender(String el, String elem) {
 		char[] renderChars = el.toCharArray();
 		StringBuilder result = new StringBuilder();
-		
+
 		List<String> results = new ArrayList<String>();
-		
+
 		int headNode = 0;
 		boolean finding = false;
 		for(int index = 0; index < renderChars.length; index ++) {
 			char currentChar = renderChars[index];
 			if(finding) {
-				if(currentChar == '}') {
-					results.add(result.toString() + "}");
+				boolean access = true;
+				for(int start = 0; start < suffix.length(); start ++){
+					if(suffix.charAt(start) != renderChars[start + index]){
+						access = false;
+						break;
+					}
+				}
+				if(access) {
+					results.add(result.toString() + suffix);
 					result.setLength(0);
 					finding = false;
 				}else {
@@ -51,47 +94,13 @@ public class NoelRender {
 			}
 		}
 		return results.toArray(new String[] {});
-		
+
 	}
-	
-	public String rending(Object o, String render, String elem) {
-		elem = prefix + elem;
-		String[] segments = splitRender(render, elem);
-		
-		StringBuilder result = new StringBuilder();
-		for(int index = 0; index < segments.length; index ++) {
-			String segment = segments[index];
-			if(segment.startsWith(elem + '.') || segment.startsWith(elem + '}')) {
-				int indexof = segment.indexOf(".");
-				if(indexof != -1) {
-					segments[index] = getValueWrapper(getFinalValue(segment.replaceAll("[\\@|\\{|\\}]", ""), o));
-				}else {
-					segments[index] = getValueWrapper(getValue(o, elem.replaceAll("[\\@|\\{|\\}]", "")));
-				}
-			}
-			result.append(segments[index]);
-		}
-		return result.toString();
-		
-	}
-	
-	/**
-	 * 空对象处理
-	 * 
-	 * @param value
-	 * @return
-	 */
+
 	public String getValueWrapper(Object value) {
-		return value == null ? "":value.toString();
+		return value == null ? BLANK:value.toString();
 	}
-	
-	/**
-	 * 获取Field的值
-	 * 
-	 * @param fieldName
-	 * @param obj
-	 * @return
-	 */
+
 	public Object getFieldValue(String fieldName, Object obj){
 		Object target = null;
 		Field field = getField(fieldName, obj.getClass());
@@ -99,21 +108,13 @@ public class NoelRender {
 			try {
 				field.setAccessible(true);
 				target = field.get(obj);
-			//jump
+				//jump
 			} catch (IllegalArgumentException e) {
 			} catch (IllegalAccessException e) {
 			}
 		}
 		return target;
 	}
-	
-	/**
-	 * 获取Class的Field
-	 * 
-	 * @param fieldName
-	 * @param clazz
-	 * @return
-	 */
 	public Field getField(String fieldName, Class<?> clazz){
 		Field field = null;
 		try {
@@ -128,15 +129,8 @@ public class NoelRender {
 		return field;
 	}
 	
-	/**
-	 * 获取el表达式对应的值
-	 * 
-	 * @param fieldNames
-	 * @param obj
-	 * @return
-	 */
-	public Object getFinalValue(String fieldNames, Object obj) {
-		String[] fieldSegs = fieldNames.split("[.]");
+	public Object getChain(Object obj, String fieldNames) {
+		String[] fieldSegs = fieldNames.split("\\" + split);
 		Object target = obj;
 		for(int index = 1; index < fieldSegs.length; index ++) {
 			String segs = fieldSegs[index];
@@ -144,27 +138,16 @@ public class NoelRender {
 				target = getValue(target, segs);
 			}
 		}
-		return target;
+		return getValueWrapper(target);
 	}
 	
-	/**
-	 * 获取对象中的值
-	 * 支持对象和Map
-	 * 
- 	 * @param obj 
- 	 * 			要获取值的对象
-	 * @param key 
-	 * 			要获取的值得名字
-	 * @return
-	 * 			目标
-	 */
 	public Object getValue(Object obj, String key) {
-		Object target = "";
+		Object target = BLANK;
 		if(obj instanceof Map) {
-			target = ((Map)obj).get(key);
+			target = ((Map<?, ?>)obj).get(key);
 		}else {
 			return getFieldValue(key, obj);
 		}
-		return target == null ? "" : target.toString();
+		return getValueWrapper(target);
 	}
 }
