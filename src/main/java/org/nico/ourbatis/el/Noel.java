@@ -2,6 +2,7 @@ package org.nico.ourbatis.el;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.nico.noson.Noson;
 import org.nico.noson.entity.NoType;
@@ -16,35 +17,36 @@ public class Noel {
 	
 	private String suffix;
 	
+	private NoelRender render;
+	
 	public Noel() {
-		this.prefix = OurConfig.preffix;
-		this.suffix = OurConfig.suffix;
+		this(OurConfig.prefix, OurConfig.suffix);
 	}
 
 	public Noel(String prefix, String suffix) {
 		this.prefix = prefix;
 		this.suffix = suffix;
+		this.render = new NoelRender(prefix, suffix);
 	}
 	
-	public String el(String document, Object data) {
+	@SuppressWarnings("unchecked")
+	public NoelWriter el(String document, Object data) {
 		AssertUtils.assertNull(data);
 		AssertUtils.assertBlank(data);
-		if(data instanceof Collection) {
-			data = ConvertUtils.collectionToMap((Collection<?>) data);
-		}else {
-			data = Noson.convert(Noson.reversal(data), new NoType<Map<String, Object>>(){});
-		}
-		@SuppressWarnings("unchecked")
-		NoelAssist noelAssist = new NoelAssist((Map<String, Object>) data, new NoelRender(prefix, suffix));
-		NoelWriter noelWriter = new NoelWriter(new NicoScanner().domScan(document));
-		noelWriter.write(specialDocument -> {
-			return OurConfig
-					.adapterMap
-					.get(specialDocument.getPrefix())
-					.adapter(noelAssist, specialDocument);
-		});
-		String result = noelAssist.propertiesAssist(noelWriter.body());
-		return result;
+		final Object source = data instanceof Collection ? ConvertUtils.collectionToMap((Collection<?>) data) : Noson.convert(Noson.reversal(data), new NoType<Map<String, Object>>(){});
+		NoelWriter noelWriter = new NoelWriter(new NicoScanner().domScan(document))
+				.write(specialDocument -> {
+						return OurConfig
+								.adapterMap
+								.get(specialDocument.getPrefix())
+								.adapter((Map<String, Object>) source, render, specialDocument);
+						}, body -> {
+							for(Entry<String, Object> entry: ((Map<String, Object>) source).entrySet()) {
+								body = render.rending(source, body, entry.getKey());
+							}
+							return body;
+						});
+		return noelWriter;
 	}
 	
 }

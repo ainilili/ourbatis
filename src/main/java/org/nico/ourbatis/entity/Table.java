@@ -27,6 +27,8 @@ public class Table {
 	
 	private Class<?> domainClass;
 	
+	private String domainSimpleClassName;
+	
 	private String domainClassName;
 	
 	private String mapperClassName;
@@ -119,6 +121,14 @@ public class Table {
 
 	public void setAllColumns(List<Column> allColumns) {
 		this.allColumns = allColumns;
+	}
+
+	public String getDomainSimpleClassName() {
+		return domainSimpleClassName;
+	}
+
+	public void setDomainSimpleClassName(String domainSimpleClassName) {
+		this.domainSimpleClassName = domainSimpleClassName;
 	}
 
 }

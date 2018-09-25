@@ -3,6 +3,7 @@ package org.nico.ourbatis.el;
 import java.util.List;
 import java.util.function.Function;
 
+import org.nico.ourbatis.adapter.AssistAdapter;
 import org.nico.ourbatis.config.OurConfig;
 import org.nico.seeker.dom.DomBean;
 
@@ -24,9 +25,21 @@ public class NoelWriter {
 		return builder.toString();
 	}
 	
-	public NoelWriter write(Function<DomBean, String> specialCallBack){
+	public NoelWriter write(Function<DomBean, String> specialCallBack, Function<String, String> thenCallBack){
 		write(this.documents, specialCallBack);
+		this.builder = new StringBuilder(thenCallBack.apply(body()));
 		return this;
+	}
+	
+	public NoelWriter writeProperties(AssistAdapter adapter){
+		
+		return this;
+	}
+	
+	public String format() {
+		return new NoelFormat(body())
+				.format()
+				.result();
 	}
 	
 	private NoelWriter write(List<DomBean> documents, Function<DomBean, String> specialCallBack){

@@ -43,7 +43,7 @@ public class MapperLoader {
 		return mappers.add(mapper);
 	}
 	
-	public void builder() {
+	public void build() {
 		if(! mappers.isEmpty()) {
 			mappers.forEach(mapper -> {
 				InputStream mapperStream = new ByteArrayInputStream(mapper.getBytes());

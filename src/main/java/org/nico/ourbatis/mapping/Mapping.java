@@ -56,6 +56,7 @@ public class Mapping {
 		table.setNormalColumns(normalColumns);
 		table.setAllColumns(allColumns);
 		table.setDomainClass(domainClass);
+		table.setDomainSimpleClassName(domainClass.getSimpleName());
 		table.setDomainClassName(domainClass.getName());
 		table.setMapperClassName(OurConfig.mapperPacketUri + "." + mapperNameWrapper.wrapping(domainClass));
 		return table;
