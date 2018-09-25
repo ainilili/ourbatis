@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.ibatis.io.Resources;
-import org.nico.ourbatis.config.BaseConfig;
 
 public class StreamUtils {
 	

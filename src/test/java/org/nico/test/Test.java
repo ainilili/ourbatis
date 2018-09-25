@@ -3,7 +3,7 @@ package org.nico.test;
 import java.util.Map;
 
 import org.nico.noson.Noson;
-import org.nico.ourbatis.config.BaseConfig;
+import org.nico.ourbatis.config.OurConfig;
 import org.nico.ourbatis.el.Noel;
 import org.nico.ourbatis.entity.Table;
 import org.nico.ourbatis.mapping.Mapping;
@@ -11,6 +11,7 @@ import org.nico.ourbatis.utils.StreamUtils;
 
 public class Test {
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 
 		Mapping mapping = new Mapping();
@@ -26,8 +27,11 @@ public class Test {
 //		MapperBuilder mapperTempBuilder = new MapperBuilder(result);
 //		String renderMapper = mapperTempBuilder.builder("mapper/TestEntity.xml");
 //		System.out.println(renderMapper);
-		String document = StreamUtils.convertToString(BaseConfig.baseTemplateUri);
+		String document = StreamUtils.convertToString(OurConfig.baseTemplateUri);
 		Noel noel = new Noel("@{", "}");
-		System.out.println(noel.el(document, datas));
+		
+		String rended = noel.el(document, datas);
+		System.out.println(rended);
+		
 	}
 }

@@ -11,35 +11,35 @@ public class NoelRender {
 	private String suffix;
 
 	private String prefix;
-	
+
 	private String split;
-	
+
 	private final static String BLANK = "";
-	
+
 	public NoelRender(String prefix, String suffix) {
 		this.suffix = suffix;
 		this.prefix = prefix;
 		this.split = ".";
 	}
-	
+
 	public NoelRender(String prefix, String suffix, String split) {
 		this.suffix = suffix;
 		this.prefix = prefix;
 		this.split = split;
 	}
-	
+
 	public String rending(Object o, String text, String key) {
 		String prefixKey = prefix + key;
 		String assemblySplit = prefixKey + split;
 		String assmeblySuffix = prefixKey + suffix;
-		
+
 		String[] segments = splitRender(text, prefixKey);
 		StringBuilder result = new StringBuilder();
-		
+
 		Arrays.asList(segments).forEach(target -> {
 			if(target.startsWith(assemblySplit) || target.startsWith(assmeblySuffix)) {
 				target = target.substring(prefix.length(), target.length() - suffix.length());
-				
+
 				int indexof = target.indexOf(split);
 				if(indexof != -1) {
 					target = getValueWrapper(getChain(o, target));
@@ -115,6 +115,7 @@ public class NoelRender {
 		}
 		return target;
 	}
+	
 	public Field getField(String fieldName, Class<?> clazz){
 		Field field = null;
 		try {
@@ -128,7 +129,7 @@ public class NoelRender {
 		}
 		return field;
 	}
-	
+
 	public Object getChain(Object obj, String fieldNames) {
 		String[] fieldSegs = fieldNames.split("\\" + split);
 		Object target = obj;
@@ -140,11 +141,13 @@ public class NoelRender {
 		}
 		return getValueWrapper(target);
 	}
-	
+
 	public Object getValue(Object obj, String key) {
 		Object target = BLANK;
 		if(obj instanceof Map) {
 			target = ((Map<?, ?>)obj).get(key);
+		}else if(obj instanceof List){
+			target = ((List<?>)obj).get(Integer.valueOf(key));
 		}else {
 			return getFieldValue(key, obj);
 		}

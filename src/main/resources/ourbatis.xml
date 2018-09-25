@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="@{mapperClassName}">
     <resultMap id="BaseResultMap" type="@{domainClassName}">
-		<ob:foreach list="primaryColumns" var="elem" >
+		<ourbatis:foreach list="primaryColumns" var="elem" >
 			<id column="@{elem.jdbcName}" jdbcType="@{elem.jdbcType}" property="@{elem.javaName}" />
-		</ob:foreach>
-		<ob:foreach list="normalColumns" var="elem" >
+		</ourbatis:foreach>
+		<ourbatis:foreach list="normalColumns" var="elem" >
 			<result column="@{elem.jdbcName}" jdbcType="@{elem.jdbcType}" property="@{elem.javaName}" />
-		</ob:foreach>
+		</ourbatis:foreach>
     </resultMap>
 
    <sql id="Base_Column_List">
-   		<ob:foreach list="allColumns" var="elem" split="," >
+   		<ourbatis:foreach list="allColumns" var="elem" split="," >
 			`@{elem.jdbcName}`
-		</ob:foreach>
+		</ourbatis:foreach>
     </sql>
 </mapper>

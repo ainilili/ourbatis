@@ -2,7 +2,7 @@ package org.nico.ourbatis.el;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class NoelLooper {
 
@@ -21,10 +21,13 @@ public class NoelLooper {
 		return this;
 	}
 	
-	public void each(Consumer<Object> callBack) {
+	public void each(Function<Object, String> callBack, Consumer<String> handle) {
 		pos = 0;
 		for(Object o: list) {
-			callBack.accept(o);
+			handle.accept(callBack.apply(o));
+			if(! isLast() && split != null) {
+				handle.accept(split);
+			}
 			pos ++;
 		}
 	}

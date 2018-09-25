@@ -2,9 +2,6 @@ package org.nico.ourbatis.wrapper;
 
 import java.util.List;
 
-import org.nico.ourbatis.annotation.RenderName;
-import org.nico.ourbatis.utils.ReflactUtils;
-
 /** 
  * 
  * @author nico

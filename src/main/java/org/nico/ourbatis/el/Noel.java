@@ -1,8 +1,13 @@
 package org.nico.ourbatis.el;
 
+import java.util.Collection;
 import java.util.Map;
 
-import org.nico.ourbatis.config.BaseConfig;
+import org.nico.noson.Noson;
+import org.nico.noson.entity.NoType;
+import org.nico.ourbatis.config.OurConfig;
+import org.nico.ourbatis.utils.AssertUtils;
+import org.nico.ourbatis.utils.ConvertUtils;
 import org.nico.seeker.scan.impl.NicoScanner;
 
 public class Noel {
@@ -12,8 +17,8 @@ public class Noel {
 	private String suffix;
 	
 	public Noel() {
-		this.prefix = BaseConfig.preffix;
-		this.suffix = BaseConfig.suffix;
+		this.prefix = OurConfig.preffix;
+		this.suffix = OurConfig.suffix;
 	}
 
 	public Noel(String prefix, String suffix) {
@@ -21,15 +26,25 @@ public class Noel {
 		this.suffix = suffix;
 	}
 	
-	public String el(String document, Map<String, Object> datas) {
-		NoelAssist noelAssist = new NoelAssist(datas, new NoelRender(prefix, suffix));
+	public String el(String document, Object data) {
+		AssertUtils.assertNull(data);
+		AssertUtils.assertBlank(data);
+		if(data instanceof Collection) {
+			data = ConvertUtils.collectionToMap((Collection<?>) data);
+		}else {
+			data = Noson.convert(Noson.reversal(data), new NoType<Map<String, Object>>(){});
+		}
+		@SuppressWarnings("unchecked")
+		NoelAssist noelAssist = new NoelAssist((Map<String, Object>) data, new NoelRender(prefix, suffix));
 		NoelWriter noelWriter = new NoelWriter(new NicoScanner().domScan(document));
-		noelWriter.write(specialDomcument -> {
-			if(specialDomcument.getPrefix().equalsIgnoreCase("ob:foreach")) {
-				noelWriter.append(noelAssist.foreachAssist(specialDomcument));
-			}
+		noelWriter.write(specialDocument -> {
+			return OurConfig
+					.adapterMap
+					.get(specialDocument.getPrefix())
+					.adapter(noelAssist, specialDocument);
 		});
 		String result = noelAssist.propertiesAssist(noelWriter.body());
 		return result;
 	}
+	
 }
