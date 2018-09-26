@@ -104,5 +104,11 @@ public class XMLDocument {
 	public void setChildDocuments(List<XMLDocument> childDocuments) {
 		this.childDocuments = childDocuments;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "XMLDocument [name=" + name + ", type=" + type + ", parameters=" + parameters
+				+ "]";
+	}
+
 }
