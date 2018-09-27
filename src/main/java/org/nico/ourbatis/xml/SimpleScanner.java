@@ -7,8 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.nico.noson.util.string.StringUtils;
-
+/**
+ * A scanner with a simple implementation can complete parsing of hypertext. 
+ * Each scan of this class will fetch a hypertext object whose child elements
+ *  can be retrieved recursively, customizing the definition of the special 
+ *  label {SPECIAL_NAMES, NOTAIL_NAMES} for complex parsing situations.
+ * 
+ * @author nico
+ */
 public class SimpleScanner extends SmartScanner{
 
 	private Document currentDocument;
@@ -21,6 +27,9 @@ public class SimpleScanner extends SmartScanner{
 	
 	private int tagCount = 0;
 	
+	/**
+	 * Define label pairs that are not consistent between open and closed labels
+	 */
 	public static final Map<String, String> SPECIAL_NAMES = new HashMap<String, String>(){
 		private static final long serialVersionUID = 6675296460361731643L;
 		{
@@ -29,10 +38,14 @@ public class SimpleScanner extends SmartScanner{
 		}
 	};
 	
+	/**
+	 * A tag that defines an open tag
+	 */
 	public static final Set<String> NOTAIL_NAMES = new HashSet<String>(){
 		private static final long serialVersionUID = 6675296460361731643L;
 		{
 			add("!DOCTYPE");
+			add("img");
 		}
 	};
 	
@@ -43,7 +56,7 @@ public class SimpleScanner extends SmartScanner{
 
 	@Override
 	protected Status parseStart(char c) {
-		if(c == '<') {
+		if(c == '<' && ! cut(2).equals("</")) {
 			currentDocument = new Document();
 			currentDocument.setBeforeContent(builder.toString());
 			if(! results.isEmpty()) {
@@ -71,7 +84,8 @@ public class SimpleScanner extends SmartScanner{
 		if(builder.toString().equals("!--")) {
 			return Status.ANNOTATION;
 		}
-		if(c == ' ' || c == '\t' || c == '>' || cut(2).equals("/>") || (SPECIAL_NAMES.containsKey(builder.toString()) && cut(SPECIAL_NAMES.get(builder.toString()).length()).equals(SPECIAL_NAMES.get(builder.toString())))) {
+		String special = SPECIAL_NAMES.get(builder.toString());
+		if(c == ' ' || c == '\t' || c == '>' || cut(2).equals("/>") || (special != null && cut(special.length()).equals(special))) {
 			String name = builder.toString();
 			currentDocument.setName(name);
 			tagCount ++;
@@ -91,7 +105,7 @@ public class SimpleScanner extends SmartScanner{
 				return Status.BODY;
 			}else{
 				currentDocument.setType(DocumentType.SINGLE);
-				currentDocument.setTail(SPECIAL_NAMES.get(currentDocument.getName()));
+				currentDocument.setTail(special);
 				move(currentDocument.getTail().length());
 				return parseFinished();
 			}
@@ -114,7 +128,8 @@ public class SimpleScanner extends SmartScanner{
 	@Override
 	protected Status parseParam(char c) {
 		quotesFilter(c);
-		if(quotesIsClose() && (c == '>' || cut(2).equals("/>") || (SPECIAL_NAMES.containsKey(currentDocument.getName()) && cut(SPECIAL_NAMES.get(currentDocument.getName()).length()).equals(SPECIAL_NAMES.get(currentDocument.getName()))))) {
+		String special = SPECIAL_NAMES.get(currentDocument.getName());
+		if(quotesIsClose() && (c == '>' || cut(2).equals("/>") || (special != null && cut(special.length()).equals(special)))) {
 			String params = builder.toString();
 			currentDocument.setParameterString(params);
 			currentDocument.setParameters(DocumentUtils.parseParameters(params));
@@ -133,7 +148,7 @@ public class SimpleScanner extends SmartScanner{
 				return parseFinished();
 			}else {
 				currentDocument.setType(DocumentType.SINGLE);
-				currentDocument.setTail(cut(SPECIAL_NAMES.get(currentDocument.getName()).length()));
+				currentDocument.setTail(cut(special.length()));
 				move(currentDocument.getTail().length());
 				return parseFinished();
 			}

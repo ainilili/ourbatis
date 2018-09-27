@@ -8,11 +8,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.log4j2.Log4j2Impl;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.nico.ourbatis.OurBatis;
 import org.nico.ourbatis.el.Noel;
 import org.nico.ourbatis.el.NoelResult;
 import org.nico.ourbatis.entity.Table;
@@ -28,8 +25,9 @@ import org.nico.ourbatis.utils.StreamUtils;
  */
 public class OurbatisLoader {
 	
-	private Log log = new Log4j2Impl(this.getClass().getName());
-	
+	/**
+	 * Template information queue
+	 */
 	private Queue<String> mappers;
 	
 	private Mapping mapping;
@@ -46,6 +44,16 @@ public class OurbatisLoader {
 	
 	private String mapperPacketUri;
 	
+	/**
+	 * Get an instance of o through which mapper can be loaded into the mybatis container
+	 * 
+	 * @param sqlSessionFactory	
+	 * 			Creates an SqlSession out of a connection or a DataSource
+	 * @param baseTemplateUri
+	 * 			The uri to the template, which is the relative path of the template under the classpath
+	 * @param mapperPacketUri
+	 * 			The path of mapper's package, example 'org.nico.ourbatis.mapper', Store the Mapper interface internally
+	 */
 	public OurbatisLoader(SqlSessionFactory sqlSessionFactory, String baseTemplateUri, String mapperPacketUri) {
 		this.sqlSessionFactory = sqlSessionFactory;
 		this.configuration = sqlSessionFactory.getConfiguration();
@@ -64,6 +72,15 @@ public class OurbatisLoader {
 				"===========================================================================\\\\");
 	}
 	
+	/**
+	 * After a class is parsed as a template, it is added to the load queue. 
+	 * When the build method is called, the template content in the queue is 
+	 * loaded in turn into the Mybatis container
+	 * 
+	 * @param clazz
+	 * 			Target class
+	 * @return This instance 		
+	 */
 	public OurbatisLoader add(Class<?> clazz) {
 		System.out.println("Ourbatis ->> Loading " + clazz.getName());
 		Table entityInfo = mapping.mappingTable(clazz, mapperPacketUri);
@@ -72,6 +89,13 @@ public class OurbatisLoader {
 		return this;
 	}
 	
+	/**
+	 * Add all the class files under the package by scanning the package path
+	 * 
+	 * @param packet 
+	 * 			Package path
+	 * @return This instance
+	 */
 	public OurbatisLoader add(String packet) {
 		try {
 			List<Class<?>> classes = ClassUtils.getClasses(packet);
@@ -86,6 +110,9 @@ public class OurbatisLoader {
 		return this;
 	}
 	
+	/**
+	 * Calling this method will load the template information from the queue into the Mybatis container in turn
+	 */
 	public void build() {
 		System.out.print("Ourbatis ->> Building");
 		if(! mappers.isEmpty()) {

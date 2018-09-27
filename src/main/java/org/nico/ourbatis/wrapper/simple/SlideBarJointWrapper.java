@@ -1,5 +1,6 @@
 package org.nico.ourbatis.wrapper.simple;
 
+import org.nico.ourbatis.utils.StringUtils;
 import org.nico.ourbatis.wrapper.Wrapper;
 
 public class SlideBarJointWrapper extends Wrapper<String>{
@@ -8,8 +9,8 @@ public class SlideBarJointWrapper extends Wrapper<String>{
 	
 	@Override
 	public String wrapping(String value) {
-		if (value == null || "".equals(value.trim())){
-            return "";
+		if (value == null || StringUtils.BLANK.equals(value.trim())){
+            return StringUtils.BLANK;
         }
         int len = value.length();
         StringBuilder sb = new StringBuilder(len);

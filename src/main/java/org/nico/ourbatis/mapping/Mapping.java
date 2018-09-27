@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nico.ourbatis.OurBatis;
 import org.nico.ourbatis.entity.Column;
 import org.nico.ourbatis.entity.Table;
 import org.nico.ourbatis.utils.ArrayUtils;
@@ -15,6 +14,12 @@ import org.nico.ourbatis.wrapper.MapperNameWrapper;
 import org.nico.ourbatis.wrapper.TableNameWrapper;
 import org.nico.ourbatis.wrapper.Wrapper;
 
+/**
+ * The purpose of Mapping is to parse an entity class and transform it 
+ * into database information to serve as metadata when the template is parsed
+ * 
+ * @author nico
+ */
 public class Mapping {
 
 	private Wrapper<Class<?>> tableNameWrapper;

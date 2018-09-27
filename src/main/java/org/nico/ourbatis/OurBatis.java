@@ -13,16 +13,39 @@ import org.nico.ourbatis.adapter.ForeachAdapter;
 import org.nico.ourbatis.adapter.RefAdapter;
 import org.nico.ourbatis.wrapper.Wrapper;
 
+/**
+ * Ourbatis configuration center defines some global parameters
+ * 
+ * @author nico
+ */
 public class OurBatis {
-
+	
+	/**
+	 * Template matching prefix
+	 */
 	public static String prefix = "@{";
 	
+	/**
+	 * Template matching suffix
+	 */
 	public static String suffix = "}";
 	
+	/**
+	 * Database field wrapper collection, Field wrapping for Mapping when entity classes are database information.
+	 * For example, a simple implementation: transform the hump naming to the glide bar splicing {@link SlideBarJointWrapper}
+	 */
 	public static final List<Wrapper<String>> JDBC_NAME_WRAPPERS = new ArrayList<Wrapper<String>>();
 	
+	/**
+	 * Table name wrapper collection, lass names can be wrapped when mapping table names
+	 * For example, a simple implementation: transform the hump naming to the glide bar splicing {@link SlideBarJointWrapper}
+	 */
 	public static final List<Wrapper<String>> TABLE_NAME_WRAPPERS = new ArrayList<Wrapper<String>>();
 	
+	/**
+	 * Mapper file wrapper collection
+	 * For example, a simple implementation: transform the hump naming to the glide bar splicing {@link SlideBarJointWrapper}
+	 */
 	public static final List<Wrapper<String>> MAPPER_NAME_WRAPPERS = new ArrayList<Wrapper<String>>();
 	
 	public static final Map<String, AssistAdapter> ASSIST_ADAPTERS = new HashMap<String, AssistAdapter>(){

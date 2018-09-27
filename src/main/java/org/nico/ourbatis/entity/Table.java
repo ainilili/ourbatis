@@ -4,19 +4,30 @@ import java.util.List;
 import java.util.Map;
 
 /** 
+ * Entity classes map to carriers of table information
  * 
  * @author nico
- * @version createTime：2018年8月26日 下午4:52:15
  */
-
 public class Table {
-
+	
+	/**
+	 * Table name of mapping. The default value is the entity class name before wrapping
+	 */
 	private String tableName;
 	
+	/**
+	 * Character encoding
+	 */
 	private String charset;
 	
+	/**
+	 * Host of datasource
+	 */
 	private String host;
 	
+	/**
+	 * Port of datasource
+	 */
 	private String port;
 	
 	private List<Column> primaryColumns;

@@ -3,23 +3,25 @@ package org.nico.ourbatis.xml;
 import java.util.List;
 import java.util.Map;
 
+import org.nico.ourbatis.utils.StringUtils;
+
 public class Document {
 
 	private String name;
 	
-	private String tail = "";
+	private String tail = StringUtils.BLANK;
 	
 	private DocumentType type;
 	
 	private Map<String, String> parameters;
 	
-	private String parameterString = "";
+	private String parameterString = StringUtils.BLANK;
 	
-	private String content = "";
+	private String content = StringUtils.BLANK;
 	
-	private String beforeContent = "";
+	private String beforeContent = StringUtils.BLANK;
 	
-	private String afterContent = "";
+	private String afterContent = StringUtils.BLANK;
 	
 	private Document pre;
 	
