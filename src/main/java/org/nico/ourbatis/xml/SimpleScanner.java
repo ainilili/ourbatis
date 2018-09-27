@@ -1,7 +1,7 @@
 package org.nico.ourbatis.xml;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,9 +9,9 @@ import org.nico.noson.util.string.StringUtils;
 
 public class SimpleScanner extends SmartScanner{
 
-	private XMLDocument currentDocument;
+	private Document currentDocument;
 	
-	private List<XMLDocument> results;
+	private LinkedList<Document> results;
 	
 	private int singleCount = 0;
 	
@@ -30,17 +30,28 @@ public class SimpleScanner extends SmartScanner{
 	
 	public SimpleScanner(String value) {
 		super(value);
-		results = new ArrayList<XMLDocument>();
+		results = new LinkedList<Document>();
 	}
 
 	@Override
 	protected Status parseStart(char c) {
 		if(c == '<') {
-			currentDocument = new XMLDocument();
-			String preContent = builder.toString();
-			currentDocument.setPreContent(preContent);
+			currentDocument = new Document();
+			currentDocument.setBeforeContent(builder.toString());
+			if(! results.isEmpty()) {
+				Document lastDoc = results.getLast();
+				currentDocument.setPre(lastDoc);
+				lastDoc.setNext(currentDocument);
+				lastDoc.setAfterContent(currentDocument.getBeforeContent());
+			}
 			builder.setLength(0);
 			return Status.HEAD;
+		}else if(isLast()){
+			append(c);
+			if(! results.isEmpty()) {
+				results.getLast().setAfterContent(builder.toString());
+			}
+			builder.setLength(0);
 		}else {
 			append(c);
 		}
@@ -58,10 +69,10 @@ public class SimpleScanner extends SmartScanner{
 			tagCount ++;
 			builder.setLength(0);
 			if(c == '>') {
-				currentDocument.setType(XMLDocumentType.DOUBLE);
+				currentDocument.setType(DocumentType.DOUBLE);
 				return Status.BODY;
 			}else if(cut(2).equals("/>")){
-				currentDocument.setType(XMLDocumentType.SINGLE);
+				currentDocument.setType(DocumentType.SINGLE);
 				return Status.BODY;
 			}else {
 				return Status.PARAM;
@@ -76,6 +87,7 @@ public class SimpleScanner extends SmartScanner{
 	protected Status parseAnnotation(char c) {
 		append(c);
 		if(builder.toString().endsWith("-->")) {
+			builder.setLength(0);
 			return Status.START;
 		}
 		return Status.ANNOTATION;
@@ -89,14 +101,15 @@ public class SimpleScanner extends SmartScanner{
 			currentDocument.setParameters(parseParameters(params));
 			builder.setLength(0);
 			if(c == '>') {
-				currentDocument.setType(XMLDocumentType.DOUBLE);
+				currentDocument.setType(DocumentType.DOUBLE);
 				return Status.BODY;
 			}else if(cut(2).equals("/>")){
 				move(1);
-				currentDocument.setType(XMLDocumentType.SINGLE);
-				return Status.START;
+				currentDocument.setType(DocumentType.SINGLE);
+				return parseFinished();
 			}else {
-				currentDocument.setType(XMLDocumentType.SINGLE);
+				move(1);
+				currentDocument.setType(DocumentType.SINGLE);
 				return parseFinished();
 			}
 		}else {
@@ -130,12 +143,20 @@ public class SimpleScanner extends SmartScanner{
 	protected Status parseFinished() {
 		tagCount = 0;
 		results.add(currentDocument);
-		currentDocument.setChildDocuments(new SimpleScanner(currentDocument.getContent()).scan().results());
+		
+		List<Document> childs = new SimpleScanner(currentDocument.getContent()).scan().results();
+		if(childs != null && ! childs.isEmpty()) {
+			currentDocument.setChilds(childs);
+			childs.forEach(doc -> {
+				doc.setParent(currentDocument);
+			});
+		}
+		
 		return Status.START;
 	}
 	
 	@Override
-	public List<XMLDocument> results(){
+	public List<Document> results(){
 		return results;
 	}
 

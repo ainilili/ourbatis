@@ -1,6 +1,6 @@
 package org.nico.ourbatis.xml;
 
-public enum XMLDocumentType {
+public enum DocumentType {
 
 	SINGLE,
 	

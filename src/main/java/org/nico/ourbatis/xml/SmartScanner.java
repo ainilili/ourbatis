@@ -39,23 +39,6 @@ public abstract class SmartScanner {
 		return this;
 	}
 	
-	protected void append(char c) {
-		builder.append(c);
-	}
-	
-	protected String cut(int start, int length) {
-		return value.substring(start, start + length);
-	}
-	
-	protected String cut(int length) {
-		return cut(pos, length);
-	}
-	
-	protected boolean move(int length) {
-		pos += length;
-		return true;
-	}
-	
 	protected abstract Status parseStart(char c);
 	
 	protected abstract Status parseHead(char c);
@@ -68,7 +51,29 @@ public abstract class SmartScanner {
 	
 	protected abstract Status parseFinished();
 	
-	public abstract List<XMLDocument> results();
+	public abstract List<Document> results();
+	
+
+	protected void append(char c) {
+		builder.append(c);
+	}
+	
+	protected String cut(int start, int length) {
+		return value.substring(start, start + length);
+	}
+	
+	protected String cut(int length) {
+		return cut(pos, length);
+	}
+	
+	protected boolean isLast() {
+		return pos == value.length() - 1;
+	}
+	
+	protected boolean move(int length) {
+		pos += length;
+		return true;
+	}
 	
 	public enum Status{
 		
