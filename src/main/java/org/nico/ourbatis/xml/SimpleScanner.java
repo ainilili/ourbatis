@@ -98,7 +98,7 @@ public class SimpleScanner extends SmartScanner{
 		quotesFilter(c);
 		if(quotesIsClose() && (c == '>' || cut(2).equals("/>") || (specialNames.containsKey(currentDocument.getName()) && cut(1).equals(specialNames.get(currentDocument.getName()))))) {
 			String params = builder.toString();
-			currentDocument.setParameters(parseParameters(params));
+			currentDocument.setParameters(DocumentUtils.parseParameters(params));
 			builder.setLength(0);
 			if(c == '>') {
 				currentDocument.setType(DocumentType.DOUBLE);
@@ -179,58 +179,6 @@ public class SimpleScanner extends SmartScanner{
 			}
 		}
 	}
-	
-	public Map<String, String> parseParameters(String paramStr) {
-		Map<String, String> parameters = new HashMap<String, String>();
-		if(StringUtils.isNotBlank(paramStr));
-		char[] domChars = paramStr.toCharArray();
-		String[] kv = new String[2];
-		StringBuffer cache = new StringBuffer();
-		int singleCount = 0;
-		int doubleCount = 0;
-		boolean scanValue = false;
-		for(int index = 0; index < domChars.length; index++){
-			char c = domChars[index];
-			if(index == domChars.length - 1){
-				if(scanValue){
-					kv[1] = cache.toString();
-					parameters.put(kv[0], kv[1]);
-				}
-			}else{
-				if(doubleCount == 0 && c == '\''){
-					singleCount = singleCount == 1 ? 0 : 1;
-					continue;
-				}
-				if(singleCount == 0 && c == '"'){
-					doubleCount = doubleCount == 1 ? 0 : 1;
-					continue;
-				}
-				if(c == '\r' || c == '\n') continue;
-				if(scanValue){
-					if(singleCount == 1 || doubleCount == 1){
-						cache.append(c);
-					}
-					if(cache.length() != 0 && singleCount == 0 && doubleCount == 0){
-						kv[1] = cache.toString();
-						cache.setLength(0);
-						parameters.put(kv[0], kv[1]);
-						scanValue = false;
-					}
-				}else{
-					if(c == '='){
-						kv[0] = cache.toString().trim();
-						cache.setLength(0);
-						scanValue = true;
-						continue;
-					}else{
-						cache.append(c);	
-					}
-				}
-			}
-		}
-		return parameters;
-	}
-	
 	
 	public boolean doubleIsClose() {
 		return doubleCount == 0;

@@ -8,16 +8,16 @@ import org.nico.ourbatis.el.NoelLooper;
 import org.nico.ourbatis.el.NoelRender;
 import org.nico.ourbatis.exception.OurbatisException;
 import org.nico.ourbatis.utils.AssertUtils;
-import org.nico.seeker.dom.DomBean;
+import org.nico.ourbatis.xml.Document;
 
 public class ForeachAdapter extends AssistAdapter{
 
 	@Override
-	public String adapter(Map<String, Object> datas, NoelRender render, DomBean document) {
-		String listKey = document.get("list");
-		String varKey = document.get("var");
-		String split = document.get("split");
-		String body = document.getBody().trim();
+	public String adapter(Map<String, Object> datas, NoelRender render, Document document) {
+		String listKey = document.getParameter("list");
+		String varKey = document.getParameter("var");
+		String split = document.getParameter("split");
+		String body = document.getContent().trim();
 		
 		StringBuilder builder = new StringBuilder();
 		if(datas.containsKey(listKey)) {

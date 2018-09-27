@@ -9,6 +9,5 @@
 	<if test="age != null" >
 	          and `age` = #{age,jdbcType=INT}
       </if>
-
-
   </delete>
+  

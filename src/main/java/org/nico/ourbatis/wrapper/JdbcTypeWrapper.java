@@ -1,5 +1,6 @@
 package org.nico.ourbatis.wrapper;
 
+import org.nico.ourbatis.contains.OurConnfig;
 
 /** 
  * 
@@ -11,7 +12,7 @@ public class JdbcTypeWrapper extends Wrapper<Class<?>>{
 	
 	@Override
 	public String wrapping(Class<?> key) {
-		return WrapperConfig.JAVA_TYPE_MAPPER.get(key);
+		return OurConnfig.JAVA_TYPE_MAPPER.get(key);
 	}
 
 }

@@ -42,9 +42,8 @@ public class StreamUtils {
 		try {
 			return convertToString(Resources.getResourceAsStream(resource));
 		} catch (IOException e) {
-			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 	
 }

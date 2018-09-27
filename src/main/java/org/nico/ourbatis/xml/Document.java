@@ -13,9 +13,9 @@ public class Document {
 	
 	private String content;
 	
-	private String beforeContent;
+	private String beforeContent = "";
 	
-	private String afterContent;
+	private String afterContent = "";
 	
 	private Document pre;
 	
@@ -31,6 +31,20 @@ public class Document {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getParameter(String key) {
+		if(this.parameters == null) {
+			return null;
+		}
+		return this.parameters.get(key);
+	}
+	
+	public String setParameter(String key, String value) {
+		if(this.parameters == null) {
+			return null;
+		}
+		return this.parameters.put(key, value);
 	}
 
 	public Map<String, String> getParameters() {

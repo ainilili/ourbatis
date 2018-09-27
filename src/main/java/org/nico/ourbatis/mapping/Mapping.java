@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nico.ourbatis.config.OurConfig;
+import org.nico.ourbatis.contains.OurConnfig;
 import org.nico.ourbatis.entity.Column;
 import org.nico.ourbatis.entity.Table;
 import org.nico.ourbatis.utils.ArrayUtils;
@@ -32,7 +32,7 @@ public class Mapping {
 		this.mapperNameWrapper = new MapperNameWrapper();
 	}
 	
-	public Table mappingTable(Class<?> domainClass){
+	public Table mappingTable(Class<?> domainClass, String mapperPacketUri){
 		Table table = new Table();
 		Field[] classFields = ReflactUtils.getFields(domainClass);
 		List<Column> normalColumns = new ArrayList<Column>(classFields.length);
@@ -58,7 +58,7 @@ public class Mapping {
 		table.setDomainClass(domainClass);
 		table.setDomainSimpleClassName(domainClass.getSimpleName());
 		table.setDomainClassName(domainClass.getName());
-		table.setMapperClassName(OurConfig.mapperPacketUri + "." + mapperNameWrapper.wrapping(domainClass));
+		table.setMapperClassName(mapperPacketUri + "." + mapperNameWrapper.wrapping(domainClass));
 		return table;
 	}
 	

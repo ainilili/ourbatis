@@ -1,17 +1,16 @@
 package org.nico.test;
 
-import java.util.Collections;
 import java.util.List;
 
-import org.nico.ourbatis.config.OurConfig;
+import org.nico.ourbatis.contains.OurConnfig;
 import org.nico.ourbatis.utils.StreamUtils;
-import org.nico.ourbatis.xml.SimpleScanner;
 import org.nico.ourbatis.xml.Document;
+import org.nico.ourbatis.xml.SimpleScanner;
 
 public class TestXML {
 
 	public static void main(String[] args) {
-		String xml = StreamUtils.convertToString(OurConfig.baseTemplateUri);
+		String xml = StreamUtils.convertToString("ourbatis.xml");
 		SimpleScanner scanner = new SimpleScanner(xml);
 		List<Document> docs = scanner.scan().results();
 		System.out.println(format(docs, 0));

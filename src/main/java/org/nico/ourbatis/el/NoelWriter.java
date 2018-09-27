@@ -4,16 +4,18 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.nico.ourbatis.adapter.AssistAdapter;
-import org.nico.ourbatis.config.OurConfig;
-import org.nico.seeker.dom.DomBean;
+import org.nico.ourbatis.contains.OurConnfig;
+import org.nico.ourbatis.xml.Document;
+import org.nico.ourbatis.xml.DocumentType;
+import org.nico.ourbatis.xml.DocumentUtils;
 
 public class NoelWriter {
 
-	private List<DomBean> documents;
+	private List<Document> documents;
 	
 	private StringBuilder builder = new StringBuilder();
 	
-	public NoelWriter(List<DomBean> documents) {
+	public NoelWriter(List<Document> documents) {
 		this.documents = documents;
 	}
 	
@@ -25,7 +27,7 @@ public class NoelWriter {
 		return builder.toString();
 	}
 	
-	public NoelWriter write(Function<DomBean, String> specialCallBack, Function<String, String> thenCallBack){
+	public NoelWriter write(Function<Document, String> specialCallBack, Function<String, String> thenCallBack){
 		write(this.documents, specialCallBack);
 		this.builder = new StringBuilder(thenCallBack.apply(body()));
 		return this;
@@ -42,27 +44,28 @@ public class NoelWriter {
 				.result();
 	}
 	
-	private NoelWriter write(List<DomBean> documents, Function<DomBean, String> specialCallBack){
-		for(DomBean d: documents){
-			if(OurConfig.adapterMap.containsKey(d.getPrefix())) {
-				builder.append(specialCallBack.apply(d));
+	private NoelWriter write(List<Document> documents, Function<Document, String> specialCallBack){
+		for(int index = 0; index < documents.size(); index ++){
+			Document document = documents.get(index);
+			builder.append(document.getBeforeContent());
+			if(OurConnfig.ASSIST_ADAPTERS.containsKey(document.getName())) {
+				builder.append(specialCallBack.apply(document));
 			}else {
-				String paramStr = "";
-				if(d.getParamStr() != null){
-					paramStr = d.getParamStr().replaceAll("&", " ");
-				}
-				if(d.isSelfSealing()){
-					builder.append("<" + d.getPrefix() + " " + paramStr + " />");
+				String paramStr = DocumentUtils.formatParameters(document.getParameters());
+				if(document.getType() == DocumentType.SINGLE){
+					builder.append("<" + document.getName() + " " + paramStr + " />");
 				}else{
-					builder.append("<" + d.getPrefix() + " " + paramStr + " >");
-					if(d.getDomProcessers() != null && d.getDomProcessers().size() > 0){
-						write(d.getDomProcessers(), specialCallBack);
+					builder.append("<" + document.getName() + " " + paramStr + " >");
+					if(document.getChilds() != null && ! document.getChilds().isEmpty()){
+						write(document.getChilds(), specialCallBack);
 					}else{
-						builder.append(d.getBody());
+						builder.append(document.getContent());
 					}
-					builder.append("</"+ d.getPrefix() + ">");
+					builder.append("</"+ document.getName() + ">");
 				}
-				
+			}
+			if(index == documents.size() - 1) {
+				builder.append(document.getAfterContent());
 			}
 		}
 		return this;
