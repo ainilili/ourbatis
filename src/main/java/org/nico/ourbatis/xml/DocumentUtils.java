@@ -1,6 +1,7 @@
 package org.nico.ourbatis.xml;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -9,7 +10,7 @@ import org.nico.noson.util.string.StringUtils;
 public class DocumentUtils {
 
 	public static Map<String, String> parseParameters(String paramStr) {
-		Map<String, String> parameters = new HashMap<String, String>();
+		Map<String, String> parameters = new LinkedHashMap<String, String>();
 		if(StringUtils.isNotBlank(paramStr));
 		char[] domChars = paramStr.toCharArray();
 		String[] kv = new String[2];

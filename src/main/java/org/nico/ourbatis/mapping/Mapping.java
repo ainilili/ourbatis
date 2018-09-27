@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nico.ourbatis.contains.OurConnfig;
+import org.nico.ourbatis.OurBatis;
 import org.nico.ourbatis.entity.Column;
 import org.nico.ourbatis.entity.Table;
 import org.nico.ourbatis.utils.ArrayUtils;

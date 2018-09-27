@@ -7,11 +7,15 @@ public class Document {
 
 	private String name;
 	
+	private String tail = "";
+	
 	private DocumentType type;
 	
 	private Map<String, String> parameters;
 	
-	private String content;
+	private String parameterString = "";
+	
+	private String content = "";
 	
 	private String beforeContent = "";
 	
@@ -71,6 +75,14 @@ public class Document {
 		this.content = content;
 	}
 
+	public String getParameterString() {
+		return parameterString;
+	}
+
+	public void setParameterString(String parameterString) {
+		this.parameterString = parameterString;
+	}
+
 	public String getBeforeContent() {
 		return beforeContent;
 	}
@@ -89,6 +101,14 @@ public class Document {
 
 	public Document getPre() {
 		return pre;
+	}
+
+	public String getTail() {
+		return tail;
+	}
+
+	public void setTail(String tail) {
+		this.tail = tail;
 	}
 
 	public void setPre(Document pre) {
@@ -121,7 +141,7 @@ public class Document {
 
 	@Override
 	public String toString() {
-		return "XMLDocument [name=" + name + ", type=" + type + ", parameters=" + parameters + "]";
+		return "Document [name=" + name + ", tail=" + tail + "]";
 	}
-	
+
 }

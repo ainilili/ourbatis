@@ -45,10 +45,10 @@ public class NoelFormat {
 					builder.append(System.lineSeparator());
 				}
 			}
-			String paramStr = DocumentUtils.formatParameters(document.getParameters());
+			String paramStr = document.getParameterString();
 			if(document.getType() == DocumentType.SINGLE){
 				builder.append(tab);
-				builder.append("<" + document.getName() + " " + paramStr + " />");
+				builder.append("<" + document.getName() + " " + paramStr + document.getTail() + ">");
 				builder.append(System.lineSeparator());
 			}else{
 				builder.append(tab);

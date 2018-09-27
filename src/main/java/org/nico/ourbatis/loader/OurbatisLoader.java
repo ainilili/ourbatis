@@ -12,7 +12,7 @@ import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.log4j2.Log4j2Impl;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.nico.ourbatis.contains.OurConnfig;
+import org.nico.ourbatis.OurBatis;
 import org.nico.ourbatis.el.Noel;
 import org.nico.ourbatis.el.NoelResult;
 import org.nico.ourbatis.entity.Table;
@@ -26,7 +26,7 @@ import org.nico.ourbatis.utils.StreamUtils;
  * @author nico
  * @time 2018-08-23 18:22
  */
-public class MapperLoader {
+public class OurbatisLoader {
 	
 	private Log log = new Log4j2Impl(this.getClass().getName());
 	
@@ -46,7 +46,7 @@ public class MapperLoader {
 	
 	private String mapperPacketUri;
 	
-	public MapperLoader(SqlSessionFactory sqlSessionFactory, String baseTemplateUri, String mapperPacketUri) {
+	public OurbatisLoader(SqlSessionFactory sqlSessionFactory, String baseTemplateUri, String mapperPacketUri) {
 		this.sqlSessionFactory = sqlSessionFactory;
 		this.configuration = sqlSessionFactory.getConfiguration();
 		this.mappers = new ConcurrentLinkedQueue<String>();
@@ -54,8 +54,8 @@ public class MapperLoader {
 		this.noel = new Noel();
 		this.baseTemplateUri = baseTemplateUri;
 		this.mapperPacketUri = mapperPacketUri;
-		this.baseTemplateContent = StreamUtils.convertToString(baseTemplateUri);
-		log.debug(" _____   _   _   _____    _____       ___   _____   _   _____  \r\n" + 
+		this.baseTemplateContent = StreamUtils.convertToString(this.baseTemplateUri);
+		System.out.println(" _____   _   _   _____    _____       ___   _____   _   _____  \r\n" + 
 				"/  _  \\ | | | | |  _  \\  |  _  \\     /   | |_   _| | | /  ___/ \r\n" + 
 				"| | | | | | | | | |_| |  | |_| |    / /| |   | |   | | | |___  \r\n" + 
 				"| | | | | | | | |  _  /  |  _  {   / /_| |   | |   | | \\___  \\ \r\n" + 
@@ -64,15 +64,15 @@ public class MapperLoader {
 				"===========================================================================\\\\");
 	}
 	
-	public MapperLoader add(Class<?> clazz) {
-		log.debug("Loading " + clazz.getSimpleName());
+	public OurbatisLoader add(Class<?> clazz) {
+		System.out.println("Ourbatis ->> Loading " + clazz.getName());
 		Table entityInfo = mapping.mappingTable(clazz, mapperPacketUri);
 		NoelResult result = noel.el(baseTemplateContent, entityInfo);
 		mappers.add(result.getFormat());
 		return this;
 	}
 	
-	public MapperLoader add(String packet) {
+	public OurbatisLoader add(String packet) {
 		try {
 			List<Class<?>> classes = ClassUtils.getClasses(packet);
 			if(classes != null && ! classes.isEmpty()) {
@@ -87,14 +87,16 @@ public class MapperLoader {
 	}
 	
 	public void build() {
-		log.debug("Building");
+		System.out.print("Ourbatis ->> Building");
 		if(! mappers.isEmpty()) {
 			mappers.forEach(mapper -> {
+				System.out.println(".");
 				InputStream mapperStream = new ByteArrayInputStream(mapper.getBytes());
 				XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperStream, configuration, null, configuration.getSqlFragments());
 				xmlMapperBuilder.parse();
 			});
 		}
+		System.out.println();
 	}
 
 	public Queue<String> getMappers() {

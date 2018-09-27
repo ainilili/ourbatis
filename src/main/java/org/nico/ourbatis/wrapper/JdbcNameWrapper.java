@@ -3,8 +3,8 @@ package org.nico.ourbatis.wrapper;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import org.nico.ourbatis.OurBatis;
 import org.nico.ourbatis.annotation.RenderName;
-import org.nico.ourbatis.contains.OurConnfig;
 import org.nico.ourbatis.utils.ReflactUtils;
 
 /** 
@@ -26,7 +26,7 @@ public class JdbcNameWrapper extends Wrapper<Field>{
 			}
 		}
 		if(tableRenderFlag){
-			List<Wrapper<String>> wrappers = OurConnfig.JDBC_NAME_WRAPPERS;
+			List<Wrapper<String>> wrappers = OurBatis.JDBC_NAME_WRAPPERS;
 			if(wrappers == null) {
 				throw new NullPointerException("Wrappers is null");
 			}

@@ -1,6 +1,7 @@
-package org.nico.ourbatis.contains;
+package org.nico.ourbatis;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import org.nico.ourbatis.adapter.ForeachAdapter;
 import org.nico.ourbatis.adapter.RefAdapter;
 import org.nico.ourbatis.wrapper.Wrapper;
 
-public class OurConnfig {
+public class OurBatis {
 
 	public static String prefix = "@{";
 	
@@ -37,6 +38,7 @@ public class OurConnfig {
 		{
 			put(String.class, "VARCHAR");
 			put(BigDecimal.class, "DECIMAL");
+			put(BigInteger.class, "BIGINT");
 			put(boolean.class, "BIT");
 			put(Boolean.class, "BIT");
 			put(byte.class, "TINYINT");

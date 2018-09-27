@@ -2,7 +2,7 @@ package org.nico.test;
 
 import java.util.List;
 
-import org.nico.ourbatis.contains.OurConnfig;
+import org.nico.ourbatis.OurBatis;
 import org.nico.ourbatis.utils.StreamUtils;
 import org.nico.ourbatis.xml.Document;
 import org.nico.ourbatis.xml.SimpleScanner;

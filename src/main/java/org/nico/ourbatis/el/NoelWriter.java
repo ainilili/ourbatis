@@ -3,8 +3,8 @@ package org.nico.ourbatis.el;
 import java.util.List;
 import java.util.function.Function;
 
+import org.nico.ourbatis.OurBatis;
 import org.nico.ourbatis.adapter.AssistAdapter;
-import org.nico.ourbatis.contains.OurConnfig;
 import org.nico.ourbatis.xml.Document;
 import org.nico.ourbatis.xml.DocumentType;
 import org.nico.ourbatis.xml.DocumentUtils;
@@ -48,12 +48,12 @@ public class NoelWriter {
 		for(int index = 0; index < documents.size(); index ++){
 			Document document = documents.get(index);
 			builder.append(document.getBeforeContent());
-			if(OurConnfig.ASSIST_ADAPTERS.containsKey(document.getName())) {
+			if(OurBatis.ASSIST_ADAPTERS.containsKey(document.getName())) {
 				builder.append(specialCallBack.apply(document));
 			}else {
-				String paramStr = DocumentUtils.formatParameters(document.getParameters());
+				String paramStr = document.getParameterString();
 				if(document.getType() == DocumentType.SINGLE){
-					builder.append("<" + document.getName() + " " + paramStr + " />");
+					builder.append("<" + document.getName() + " " + paramStr + document.getTail() + ">");
 				}else{
 					builder.append("<" + document.getName() + " " + paramStr + " >");
 					if(document.getChilds() != null && ! document.getChilds().isEmpty()){

@@ -2,7 +2,7 @@ package org.nico.ourbatis.wrapper;
 
 import java.util.List;
 
-import org.nico.ourbatis.contains.OurConnfig;
+import org.nico.ourbatis.OurBatis;
 
 /** 
  * 
@@ -15,7 +15,7 @@ public class MapperNameWrapper extends Wrapper<Class<?>>{
 	@Override
 	public String wrapping(Class<?> domainClass) {
 		String tableName = domainClass.getSimpleName();
-		List<Wrapper<String>> wrappers = OurConnfig.MAPPER_NAME_WRAPPERS;
+		List<Wrapper<String>> wrappers = OurBatis.MAPPER_NAME_WRAPPERS;
 		if(wrappers == null) {
 			throw new NullPointerException("Wrappers is null");
 		}

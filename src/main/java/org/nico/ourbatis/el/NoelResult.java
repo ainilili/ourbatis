@@ -8,8 +8,8 @@ public class NoelResult {
 
 	public NoelResult(String source, String format) {
 		super();
-		this.source = source;
-		this.format = format;
+		this.source = source.trim();
+		this.format = format.trim();
 	}
 
 	public String getSource() {

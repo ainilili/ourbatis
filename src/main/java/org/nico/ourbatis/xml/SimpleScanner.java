@@ -1,9 +1,11 @@
 package org.nico.ourbatis.xml;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.nico.noson.util.string.StringUtils;
 
@@ -19,12 +21,18 @@ public class SimpleScanner extends SmartScanner{
 	
 	private int tagCount = 0;
 	
-	private static Map<String, String> specialNames = new HashMap<String, String>(){
+	public static final Map<String, String> SPECIAL_NAMES = new HashMap<String, String>(){
 		private static final long serialVersionUID = 6675296460361731643L;
 		{
 			put("?xml", "?");
 			put("!--", "--");
-			put("!DOCTYPE", "html");
+		}
+	};
+	
+	public static final Set<String> NOTAIL_NAMES = new HashSet<String>(){
+		private static final long serialVersionUID = 6675296460361731643L;
+		{
+			add("!DOCTYPE");
 		}
 	};
 	
@@ -63,19 +71,29 @@ public class SimpleScanner extends SmartScanner{
 		if(builder.toString().equals("!--")) {
 			return Status.ANNOTATION;
 		}
-		if(c == ' ' || c == '\t' || c == '>' || cut(2).equals("/>") || (specialNames.containsKey(builder.toString()) && cut(2).equals(specialNames.get(builder.toString())))) {
+		if(c == ' ' || c == '\t' || c == '>' || cut(2).equals("/>") || (SPECIAL_NAMES.containsKey(builder.toString()) && cut(SPECIAL_NAMES.get(builder.toString()).length()).equals(SPECIAL_NAMES.get(builder.toString())))) {
 			String name = builder.toString();
 			currentDocument.setName(name);
 			tagCount ++;
 			builder.setLength(0);
-			if(c == '>') {
+			if(c == ' ') {
+				return Status.PARAM;
+			}else if(NOTAIL_NAMES.contains(currentDocument.getName())) {
+				currentDocument.setType(DocumentType.SINGLE);
+				currentDocument.setTail("");
+				return parseFinished();
+			}else if(c == '>') {
 				currentDocument.setType(DocumentType.DOUBLE);
 				return Status.BODY;
 			}else if(cut(2).equals("/>")){
 				currentDocument.setType(DocumentType.SINGLE);
+				currentDocument.setTail("/");
 				return Status.BODY;
-			}else {
-				return Status.PARAM;
+			}else{
+				currentDocument.setType(DocumentType.SINGLE);
+				currentDocument.setTail(SPECIAL_NAMES.get(currentDocument.getName()));
+				move(currentDocument.getTail().length());
+				return parseFinished();
 			}
 		}else {
 			append(c);
@@ -96,20 +114,27 @@ public class SimpleScanner extends SmartScanner{
 	@Override
 	protected Status parseParam(char c) {
 		quotesFilter(c);
-		if(quotesIsClose() && (c == '>' || cut(2).equals("/>") || (specialNames.containsKey(currentDocument.getName()) && cut(1).equals(specialNames.get(currentDocument.getName()))))) {
+		if(quotesIsClose() && (c == '>' || cut(2).equals("/>") || (SPECIAL_NAMES.containsKey(currentDocument.getName()) && cut(SPECIAL_NAMES.get(currentDocument.getName()).length()).equals(SPECIAL_NAMES.get(currentDocument.getName()))))) {
 			String params = builder.toString();
+			currentDocument.setParameterString(params);
 			currentDocument.setParameters(DocumentUtils.parseParameters(params));
 			builder.setLength(0);
-			if(c == '>') {
+			if(NOTAIL_NAMES.contains(currentDocument.getName())) {
+				currentDocument.setType(DocumentType.SINGLE);
+				currentDocument.setTail("");
+				return parseFinished();
+			}else if(c == '>') {
 				currentDocument.setType(DocumentType.DOUBLE);
 				return Status.BODY;
 			}else if(cut(2).equals("/>")){
 				move(1);
 				currentDocument.setType(DocumentType.SINGLE);
+				currentDocument.setTail("/");
 				return parseFinished();
 			}else {
-				move(1);
 				currentDocument.setType(DocumentType.SINGLE);
+				currentDocument.setTail(cut(SPECIAL_NAMES.get(currentDocument.getName()).length()));
+				move(currentDocument.getTail().length());
 				return parseFinished();
 			}
 		}else {

@@ -2,8 +2,8 @@ package org.nico.ourbatis.wrapper;
 
 import java.util.List;
 
+import org.nico.ourbatis.OurBatis;
 import org.nico.ourbatis.annotation.RenderName;
-import org.nico.ourbatis.contains.OurConnfig;
 import org.nico.ourbatis.utils.ReflactUtils;
 
 /** 
@@ -25,7 +25,7 @@ public class TableNameWrapper extends Wrapper<Class<?>>{
 			}
 		}
 		if(tableRenderFlag){
-			List<Wrapper<String>> wrappers = OurConnfig.TABLE_NAME_WRAPPERS;
+			List<Wrapper<String>> wrappers = OurBatis.TABLE_NAME_WRAPPERS;
 			if(wrappers == null) {
 				throw new NullPointerException("Wrappers is null");
 			}
