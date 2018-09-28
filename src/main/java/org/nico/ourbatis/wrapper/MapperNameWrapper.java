@@ -2,20 +2,14 @@ package org.nico.ourbatis.wrapper;
 
 import java.util.List;
 
-import org.nico.ourbatis.OurBatis;
+import org.nico.ourbatis.Ourbatis;
 
-/** 
- * 
- * @author nico
- * @version createTime：2018年8月26日 下午5:05:32
- */
-
-public class MapperNameWrapper extends Wrapper<Class<?>>{
+public class MapperNameWrapper implements Wrapper<Class<?>>{
 
 	@Override
 	public String wrapping(Class<?> domainClass) {
 		String tableName = domainClass.getSimpleName();
-		List<Wrapper<String>> wrappers = OurBatis.MAPPER_NAME_WRAPPERS;
+		List<Wrapper<String>> wrappers = Ourbatis.MAPPER_NAME_WRAPPERS;
 		if(wrappers == null) {
 			throw new NullPointerException("Wrappers is null");
 		}

@@ -1,13 +1,30 @@
 package org.nico.ourbatis.entity;
 
+/**
+ * Column info
+ * 
+ * @author nico
+ */
 public class Column {
-
+	
+	/**
+	 * Database field name
+	 */
 	private String jdbcName;
 	
+	/**
+	 * Java field name
+	 */
 	private String javaName;
 	
+	/**
+	 * Database field type
+	 */
 	private String jdbcType;
 	
+	/**
+	 * Java field type
+	 */
 	private String javaType;
 
 	public String getJavaName() {

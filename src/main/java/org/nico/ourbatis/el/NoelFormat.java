@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.nico.ourbatis.xml.Document;
 import org.nico.ourbatis.xml.DocumentType;
-import org.nico.ourbatis.xml.DocumentUtils;
 import org.nico.ourbatis.xml.SimpleScanner;
 
 public class NoelFormat {

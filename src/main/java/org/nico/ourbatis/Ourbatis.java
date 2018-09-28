@@ -18,7 +18,7 @@ import org.nico.ourbatis.wrapper.Wrapper;
  * 
  * @author nico
  */
-public class OurBatis {
+public class Ourbatis {
 	
 	/**
 	 * Template matching prefix
@@ -48,6 +48,9 @@ public class OurBatis {
 	 */
 	public static final List<Wrapper<String>> MAPPER_NAME_WRAPPERS = new ArrayList<Wrapper<String>>();
 	
+	/**
+	 * Adaptor dictionaries for parsing templates
+	 */
 	public static final Map<String, AssistAdapter> ASSIST_ADAPTERS = new HashMap<String, AssistAdapter>(){
 		private static final long serialVersionUID = 1L;
 		{
@@ -56,6 +59,9 @@ public class OurBatis {
 		}
 	};
 	
+	/**
+	 * The default Java type to database field mapping relationship
+	 */
 	public static final Map<Class<?>, String> JAVA_TYPE_MAPPER = new HashMap<Class<?>, String>(){
 		private static final long serialVersionUID = 3388503832916481034L;
 		{

@@ -2,6 +2,8 @@ package org.nico.ourbatis.utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 
 import org.nico.ourbatis.annotation.RenderIgnore;
 import org.nico.ourbatis.annotation.RenderName;
@@ -51,5 +53,34 @@ public class ReflactUtils {
 	
 	public static String getRenderName(Class<?> clazz){
 		return getAnnotation(clazz, RenderName.class).value();
+	}
+	
+	public static Object getFieldValue(String fieldName, Object obj){
+		Object target = null;
+		Field field = getField(fieldName, obj.getClass());
+		if(field != null) {
+			try {
+				field.setAccessible(true);
+				target = field.get(obj);
+				//jump
+			} catch (IllegalArgumentException e) {
+			} catch (IllegalAccessException e) {
+			}
+		}
+		return target;
+	}
+	
+	public static Field getField(String fieldName, Class<?> clazz){
+		Field field = null;
+		try {
+			field = clazz.getDeclaredField(fieldName);
+		} catch (NoSuchFieldException e) {
+			if(clazz.getSuperclass() != null){
+				field = getField(fieldName, clazz.getSuperclass());
+			}else{
+				return null;
+			}
+		}
+		return field;
 	}
 }

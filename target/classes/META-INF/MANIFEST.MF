@@ -6,7 +6,7 @@ Specification-Vendor: MyBatis.org
 Specification-Title: ourbatis
 Implementation-Vendor-Id: com.smallnico
 Implementation-Vendor: MyBatis.org
-Implementation-Build-Date: 2018-09-27 09:41:48+0000
+Implementation-Build-Date: 2018-09-27 12:18:08+0000
 X-Compile-Target-JDK: 1.6
 X-Compile-Source-JDK: 1.6
 Build-Jdk: 1.8.0_112

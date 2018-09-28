@@ -10,6 +10,19 @@ import org.nico.ourbatis.exception.OurbatisException;
 import org.nico.ourbatis.utils.AssertUtils;
 import org.nico.ourbatis.xml.Document;
 
+/**
+ * &lt;ourbatis:foreach&gt; Render adapter, The {@link Document} object passed 
+ * in by the adapter can contain three parameters {list, var, [split]}
+ * <ol>
+ * 	<li><strong>list</strong>: The key in the datas metadata, the value corresponding to the key must
+ *  be a collection as the target of the loop</li>
+ *  <li><strong>var</strong>: An alias name for the traversed element within the scope</li>
+ *  <li><strong>split</strong>: If a split exists, the value specified by the split will be spliced 
+ *  before and after the element to be looped</li>
+ * </ol>
+ * 
+ * @author nico
+ */
 public class ForeachAdapter extends AssistAdapter{
 
 	@Override

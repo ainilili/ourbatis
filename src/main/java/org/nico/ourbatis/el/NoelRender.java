@@ -6,14 +6,33 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.nico.ourbatis.utils.ReflactUtils;
+
+/**
+ * Template rendering tool
+ * 
+ * @author nico
+ */
 public class NoelRender {
 
+	/**
+	 * The prefix of the expression container，example '}'
+	 */
+	private String prefix;
+	
+	/**
+	 * The suffix for the expression container, example '${'
+	 */
 	private String suffix;
 
-	private String prefix;
-
+	/**
+	 * The content separator in the expression container，if split's value is '.', then the content of the container is ${user.name}
+	 */
 	private String split;
 
+	/**
+	 * Empty string
+	 */
 	private final static String BLANK = "";
 
 	public NoelRender(String prefix, String suffix) {
@@ -27,7 +46,19 @@ public class NoelRender {
 		this.prefix = prefix;
 		this.split = split;
 	}
-
+	
+	/**
+	 * Renders a text and replaces the placeholder with the content of the key under the match object
+	 * 
+	 * @param o		
+	 * 			Matched object
+	 * @param text
+	 * 			Text to be rendered
+	 * @param key
+	 * 			Key to match
+	 * @return
+	 * 			Key render results to be matched
+	 */
 	public String rending(Object o, String text, String key) {
 		String prefixKey = prefix + key;
 		String assemblySplit = prefixKey + split;
@@ -42,18 +73,30 @@ public class NoelRender {
 
 				int indexof = target.indexOf(split);
 				if(indexof != -1) {
-					target = getValueWrapper(getChain(o, target));
+					target = valueWrapper(getChain(o, target));
 				}else {
-					target = getValueWrapper(getValue(o, target));
+					target = valueWrapper(getValue(o, target));
 				}
 			}
 			result.append(target);
 		});
 		return result.toString();
 	}
-
-	public String[] splitRender(String el, String elem) {
-		char[] renderChars = el.toCharArray();
+	
+	/**
+	 * The current key to be rendered is used as the segmentation point, the text 
+	 * to be rendered is split into an array, and some elements in the array may 
+	 * match the key to be rendered.
+	 * 
+	 * @param text
+	 * 			Text to be rendered
+	 * @param elem
+	 * 			Key to match
+	 * @return
+	 * 			Array to be processed
+	 */
+	public String[] splitRender(String text, String elem) {
+		char[] renderChars = text.toCharArray();
 		StringBuilder result = new StringBuilder();
 
 		List<String> results = new ArrayList<String>();
@@ -78,14 +121,14 @@ public class NoelRender {
 					result.append(currentChar);
 				}
 			}else {
-				headNode = el.indexOf(elem, index);
+				headNode = text.indexOf(elem, index);
 				if(headNode != -1) {
-					results.add(el.substring(index, headNode));
+					results.add(text.substring(index, headNode));
 					index = headNode + elem.length() - 1;
 					result.append(elem);
 					finding = true;
 				}else {
-					results.add(el.substring(index));
+					results.add(text.substring(index));
 					break;
 				}
 			}
@@ -96,40 +139,29 @@ public class NoelRender {
 		return results.toArray(new String[] {});
 
 	}
-
-	public String getValueWrapper(Object value) {
+	
+	/**
+	 * Packaging value
+	 * 	
+	 * @param value
+	 * 			Value to be wrapped
+	 * @return
+	 * 			Value after packaging
+	 */
+	public String valueWrapper(Object value) {
 		return value == null ? BLANK:value.toString();
 	}
-
-	public Object getFieldValue(String fieldName, Object obj){
-		Object target = null;
-		Field field = getField(fieldName, obj.getClass());
-		if(field != null) {
-			try {
-				field.setAccessible(true);
-				target = field.get(obj);
-				//jump
-			} catch (IllegalArgumentException e) {
-			} catch (IllegalAccessException e) {
-			}
-		}
-		return target;
-	}
 	
-	public Field getField(String fieldName, Class<?> clazz){
-		Field field = null;
-		try {
-			field = clazz.getDeclaredField(fieldName);
-		} catch (NoSuchFieldException e) {
-			if(clazz.getSuperclass() != null){
-				field = getField(fieldName, clazz.getSuperclass());
-			}else{
-				return null;
-			}
-		}
-		return field;
-	}
-
+	/**
+	 * Gets the value of a string chain
+	 * 
+	 * @param obj
+	 * 			Chain head object
+	 * @param fieldNames
+	 * 			The name of the chain
+	 * @return
+	 * 			Target object
+	 */
 	public Object getChain(Object obj, String fieldNames) {
 		String[] fieldSegs = fieldNames.split("\\" + split);
 		Object target = obj;
@@ -139,18 +171,29 @@ public class NoelRender {
 				target = getValue(target, segs);
 			}
 		}
-		return getValueWrapper(target);
+		return target;
 	}
-
+	
+	/**
+	 * Gets the value of the specified object field
+	 * 
+	 * @param obj
+	 * 			Object
+	 * @param key
+	 * 			Field name
+	 * @return
+	 * 			Target object
+	 */
 	public Object getValue(Object obj, String key) {
-		Object target = BLANK;
+		Object target = null;
 		if(obj instanceof Map) {
 			target = ((Map<?, ?>)obj).get(key);
 		}else if(obj instanceof List){
 			target = ((List<?>)obj).get(Integer.valueOf(key));
 		}else {
-			return getFieldValue(key, obj);
+			return ReflactUtils.getFieldValue(key, obj);
 		}
-		return getValueWrapper(target);
+		return target;
 	}
+
 }

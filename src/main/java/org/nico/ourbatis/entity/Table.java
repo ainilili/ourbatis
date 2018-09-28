@@ -30,20 +30,44 @@ public class Table {
 	 */
 	private String port;
 	
+	/**
+	 * Primary columns
+	 */
 	private List<Column> primaryColumns;
 	
+	/**
+	 * Normal columns
+	 */
 	private List<Column> normalColumns;
 	
+	/**
+	 * Primary & Normal columns
+	 */
 	private List<Column> allColumns;
 	
+	/**
+	 * Current domain class
+	 */
 	private Class<?> domainClass;
 	
+	/**
+	 * Current domain simple class name
+	 */
 	private String domainSimpleClassName;
 	
+	/**
+	 * Current domain class name
+	 */
 	private String domainClassName;
 	
+	/**
+	 * Mapper class name
+	 */
 	private String mapperClassName;
 	
+	/**
+	 * Parameters
+	 */
 	private Map<String, Object> params;
 	
 	public Map<String, Object> getParams() {

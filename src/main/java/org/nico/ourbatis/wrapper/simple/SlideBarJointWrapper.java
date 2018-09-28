@@ -3,7 +3,12 @@ package org.nico.ourbatis.wrapper.simple;
 import org.nico.ourbatis.utils.StringUtils;
 import org.nico.ourbatis.wrapper.Wrapper;
 
-public class SlideBarJointWrapper extends Wrapper<String>{
+/**
+ * Change the hump style to glide bar style
+ * 
+ * @author nico
+ */
+public class SlideBarJointWrapper implements Wrapper<String>{
 
 	public static final char UNDERLINE='_';
 	

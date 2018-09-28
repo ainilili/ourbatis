@@ -3,12 +3,16 @@ package org.nico.ourbatis.el;
 import java.util.List;
 import java.util.function.Function;
 
-import org.nico.ourbatis.OurBatis;
+import org.nico.ourbatis.Ourbatis;
 import org.nico.ourbatis.adapter.AssistAdapter;
 import org.nico.ourbatis.xml.Document;
 import org.nico.ourbatis.xml.DocumentType;
-import org.nico.ourbatis.xml.DocumentUtils;
 
+/**
+ * Renders and writes the entire template file
+ * 
+ * @author nico
+ */
 public class NoelWriter {
 
 	private List<Document> documents;
@@ -48,7 +52,7 @@ public class NoelWriter {
 		for(int index = 0; index < documents.size(); index ++){
 			Document document = documents.get(index);
 			builder.append(document.getBeforeContent());
-			if(OurBatis.ASSIST_ADAPTERS.containsKey(document.getName())) {
+			if(Ourbatis.ASSIST_ADAPTERS.containsKey(document.getName())) {
 				builder.append(specialCallBack.apply(document));
 			}else {
 				String paramStr = document.getParameterString();

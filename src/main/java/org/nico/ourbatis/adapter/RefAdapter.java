@@ -6,6 +6,11 @@ import org.nico.ourbatis.el.NoelRender;
 import org.nico.ourbatis.utils.StreamUtils;
 import org.nico.ourbatis.xml.Document;
 
+/**
+ * &lt;ourbatis:ref&gt; Render adapter, The specified file will be redirected and the 
+ * contents copied to the label
+ * @author nico
+ */
 public class RefAdapter extends AssistAdapter{
 
 	@Override
@@ -14,7 +19,5 @@ public class RefAdapter extends AssistAdapter{
 		String result =  StreamUtils.convertToString(path.replaceAll("classpath:", ""));
 		return result == null ? "" : result.trim();
 	}
-
-
 
 }
