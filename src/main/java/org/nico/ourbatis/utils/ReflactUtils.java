@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+import org.nico.ourbatis.annotation.MapperLocations;
 import org.nico.ourbatis.annotation.RenderIgnore;
 import org.nico.ourbatis.annotation.RenderName;
 import org.nico.ourbatis.annotation.RenderPrimary;
@@ -45,6 +46,14 @@ public class ReflactUtils {
 	
 	public static boolean isRenderName(Class<?> clazz){
 		return isAnnotation(clazz, RenderName.class);
+	}
+	
+	public static boolean isMapperLocations(Class<?> clazz){
+		return isAnnotation(clazz, MapperLocations.class);
+	}
+	
+	public static String getMapperLocations(Class<?> clazz){
+		return getAnnotation(clazz, MapperLocations.class).value();
 	}
 	
 	public static String getRenderName(Field field){

@@ -37,7 +37,7 @@ public class Mapping {
 		this.mapperNameWrapper = new MapperNameWrapper();
 	}
 	
-	public Table mappingTable(Class<?> domainClass, String mapperPacketUri){
+	public Table mappingTable(Class<?> domainClass, String mapperLocations){
 		Table table = new Table();
 		Field[] classFields = ReflactUtils.getFields(domainClass);
 		List<Column> normalColumns = new ArrayList<Column>(classFields.length);
@@ -63,7 +63,10 @@ public class Mapping {
 		table.setDomainClass(domainClass);
 		table.setDomainSimpleClassName(domainClass.getSimpleName());
 		table.setDomainClassName(domainClass.getName());
-		table.setMapperClassName(mapperPacketUri + "." + mapperNameWrapper.wrapping(domainClass));
+		if(ReflactUtils.isMapperLocations(domainClass)) {
+			mapperLocations = ReflactUtils.getMapperLocations(domainClass);
+		}
+		table.setMapperClassName(mapperLocations + "." + mapperNameWrapper.wrapping(domainClass));
 		return table;
 	}
 	

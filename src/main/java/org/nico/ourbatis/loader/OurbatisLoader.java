@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
@@ -46,7 +47,7 @@ public class OurbatisLoader {
 	
 	private String baseTemplateContent;
 	
-	private String mapperPacketUri;
+	private String mapperLocations;
 	
 	/**
 	 * Get an instance of o through which mapper can be loaded into the mybatis container
@@ -58,22 +59,16 @@ public class OurbatisLoader {
 	 * @param mapperPacketUri
 	 * 			The path of mapper's package, example 'org.nico.ourbatis.mapper', Store the Mapper interface internally
 	 */
-	public OurbatisLoader(SqlSessionFactory sqlSessionFactory, String baseTemplateUri, String mapperPacketUri) {
+	public OurbatisLoader(SqlSessionFactory sqlSessionFactory, String baseTemplateUri, String mapperLocations) {
 		this.sqlSessionFactory = sqlSessionFactory;
 		this.configuration = sqlSessionFactory.getConfiguration();
 		this.mappers = new LinkedHashMap<Class<?>, String>();
 		this.mapping = new Mapping();
 		this.noel = new Noel();
 		this.baseTemplateUri = baseTemplateUri;
-		this.mapperPacketUri = mapperPacketUri;
+		this.mapperLocations = mapperLocations;
 		this.baseTemplateContent = StreamUtils.convertToString(this.baseTemplateUri);
-		System.out.println(" _____   _   _   _____    _____       ___   _____   _   _____  \r\n" + 
-				"/  _  \\ | | | | |  _  \\  |  _  \\     /   | |_   _| | | /  ___/ \r\n" + 
-				"| | | | | | | | | |_| |  | |_| |    / /| |   | |   | | | |___  \r\n" + 
-				"| | | | | | | | |  _  /  |  _  {   / /_| |   | |   | | \\___  \\ \r\n" + 
-				"| |_| | | |_| | | | \\ \\  | |_| |  / /  | |   | |   | |  ___| | \r\n" + 
-				"\\_____/ \\_____/ |_|  \\_\\ |_____/ /_/   |_|   |_|   |_| /_____/   ~LOADING\r\n" +
-				"===========================================================================\\\\");
+		System.out.println("Ourbatis ->>>>>> Session " + sqlSessionFactory);
 	}
 	
 	/**
@@ -87,9 +82,11 @@ public class OurbatisLoader {
 	 */
 	public OurbatisLoader add(Class<?> clazz) {
 		System.out.println("Ourbatis ->> Loading " + clazz.getName());
-		Table entityInfo = mapping.mappingTable(clazz, mapperPacketUri);
-		NoelResult result = noel.el(baseTemplateContent, entityInfo);
-		mappers.put(clazz, result.getFormat());
+		Table entityInfo = mapping.mappingTable(clazz, mapperLocations);
+		if(ClassUtils.forName(entityInfo.getMapperClassName()) != null) {
+			NoelResult result = noel.el(baseTemplateContent, entityInfo);
+			mappers.put(clazz, result.getFormat());
+		}
 		return this;
 	}
 	
@@ -102,7 +99,7 @@ public class OurbatisLoader {
 	 */
 	public OurbatisLoader add(String packet) {
 		try {
-			List<Class<?>> classes = ClassUtils.getClasses(packet);
+			Set<Class<? extends Class<?>>> classes = ClassUtils.getClasses(packet);
 			if(classes != null && ! classes.isEmpty()) {
 				classes.forEach(clazz -> {
 					add(clazz);

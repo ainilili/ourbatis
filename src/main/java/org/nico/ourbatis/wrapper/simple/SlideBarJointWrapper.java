@@ -19,14 +19,12 @@ public class SlideBarJointWrapper implements Wrapper<String>{
         }
         int len = value.length();
         StringBuilder sb = new StringBuilder(len);
-        int index = 0;
         for (int i = 0; i < len; i++) {
             char c = value.charAt(i);
             if (Character.isUpperCase(c)){
-            	if(index > 0) {
+            	if(i > 0) {
             		sb.append(UNDERLINE);
             	}
-            	index ++;
                 sb.append(Character.toLowerCase(c));
             }else{
                 sb.append(c);
