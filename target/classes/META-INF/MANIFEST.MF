@@ -1,17 +1,5 @@
 Manifest-Version: 1.0
-Implementation-Title: ourbatis
-Implementation-Version: 0.0.1
 Built-By: admin
-Specification-Vendor: MyBatis.org
-Specification-Title: ourbatis
-Implementation-Vendor-Id: com.smallnico
-Implementation-Vendor: MyBatis.org
-Implementation-Build-Date: 2018-09-27 12:18:08+0000
-X-Compile-Target-JDK: 1.6
-X-Compile-Source-JDK: 1.6
 Build-Jdk: 1.8.0_112
-Specification-Version: 0.0
-Implementation-URL: http://www.mybatis.org/spring-boot-starter/ourbati
- s/
 Created-By: Maven Integration for Eclipse
 

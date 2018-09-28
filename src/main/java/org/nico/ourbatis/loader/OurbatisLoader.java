@@ -3,13 +3,17 @@ package org.nico.ourbatis.loader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.nico.noson.util.string.StringUtils;
+import org.nico.ourbatis.Ourbatis;
 import org.nico.ourbatis.el.Noel;
 import org.nico.ourbatis.el.NoelResult;
 import org.nico.ourbatis.entity.Table;
@@ -28,7 +32,7 @@ public class OurbatisLoader {
 	/**
 	 * Template information queue
 	 */
-	private Queue<String> mappers;
+	private Map<Class<?>, String> mappers;
 	
 	private Mapping mapping;
 	
@@ -57,7 +61,7 @@ public class OurbatisLoader {
 	public OurbatisLoader(SqlSessionFactory sqlSessionFactory, String baseTemplateUri, String mapperPacketUri) {
 		this.sqlSessionFactory = sqlSessionFactory;
 		this.configuration = sqlSessionFactory.getConfiguration();
-		this.mappers = new ConcurrentLinkedQueue<String>();
+		this.mappers = new LinkedHashMap<Class<?>, String>();
 		this.mapping = new Mapping();
 		this.noel = new Noel();
 		this.baseTemplateUri = baseTemplateUri;
@@ -85,7 +89,7 @@ public class OurbatisLoader {
 		System.out.println("Ourbatis ->> Loading " + clazz.getName());
 		Table entityInfo = mapping.mappingTable(clazz, mapperPacketUri);
 		NoelResult result = noel.el(baseTemplateContent, entityInfo);
-		mappers.add(result.getFormat());
+		mappers.put(clazz, result.getFormat());
 		return this;
 	}
 	
@@ -114,23 +118,31 @@ public class OurbatisLoader {
 	 * Calling this method will load the template information from the queue into the Mybatis container in turn
 	 */
 	public void build() {
-		System.out.print("Ourbatis ->> Building");
 		if(! mappers.isEmpty()) {
-			mappers.forEach(mapper -> {
-				System.out.println(".");
+			boolean openPrint = Ourbatis.print != null;
+			mappers.forEach((clazz, mapper) -> {
+				System.out.println("Ourbatis ->> Building " + clazz.getName());
 				InputStream mapperStream = new ByteArrayInputStream(mapper.getBytes());
 				XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperStream, configuration, null, configuration.getSqlFragments());
 				xmlMapperBuilder.parse();
+				try {
+					if(openPrint) {
+						StreamUtils.write(Ourbatis.print, clazz.getName(), ".xml", mapper);
+						System.out.println("Ourbatis ->> Writing  " + clazz.getName());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
 			});
 		}
 		System.out.println();
 	}
-
-	public Queue<String> getMappers() {
+	
+	public final Map<Class<?>, String> getMappers() {
 		return mappers;
 	}
 
-	public void setMappers(Queue<String> mappers) {
+	public final void setMappers(Map<Class<?>, String> mappers) {
 		this.mappers = mappers;
 	}
 

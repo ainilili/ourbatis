@@ -31,6 +31,22 @@ public class Ourbatis {
 	public static String suffix = "}";
 	
 	/**
+	 * Template print backup
+	 */
+	public static String print = null;
+	
+	/**
+	 * Adaptor dictionaries for parsing templates
+	 */
+	public static final Map<String, AssistAdapter> ASSIST_ADAPTERS = new HashMap<String, AssistAdapter>(){
+		private static final long serialVersionUID = 1L;
+		{
+			put("ourbatis:foreach", new ForeachAdapter());
+			put("ourbatis:ref", new RefAdapter());
+		}
+	};
+	
+	/**
 	 * Database field wrapper collection, Field wrapping for Mapping when entity classes are database information.
 	 * For example, a simple implementation: transform the hump naming to the glide bar splicing {@link SlideBarJointWrapper}
 	 */
@@ -49,20 +65,9 @@ public class Ourbatis {
 	public static final List<Wrapper<String>> MAPPER_NAME_WRAPPERS = new ArrayList<Wrapper<String>>();
 	
 	/**
-	 * Adaptor dictionaries for parsing templates
-	 */
-	public static final Map<String, AssistAdapter> ASSIST_ADAPTERS = new HashMap<String, AssistAdapter>(){
-		private static final long serialVersionUID = 1L;
-		{
-			put("ourbatis:foreach", new ForeachAdapter());
-			put("ourbatis:ref", new RefAdapter());
-		}
-	};
-	
-	/**
 	 * The default Java type to database field mapping relationship
 	 */
-	public static final Map<Class<?>, String> JAVA_TYPE_MAPPER = new HashMap<Class<?>, String>(){
+	public static final Map<Class<?>, String> JAVA_TYPE_WRAPPERS = new HashMap<Class<?>, String>(){
 		private static final long serialVersionUID = 3388503832916481034L;
 		{
 			put(String.class, "VARCHAR");

@@ -1,6 +1,8 @@
 package org.nico.ourbatis.utils;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,6 +46,27 @@ public class StreamUtils {
 		} catch (IOException e) {
 			return null;
 		}
+	}
+	
+	public static void write(String path, String name, String suffix, String content) throws IOException {
+		if(path.endsWith("/")){
+			path = path + name;
+		}else {
+			path = path + "/" + name;
+		}
+		if(suffix.startsWith(".")) {
+			path = path + suffix;
+		}else {
+			path = path + "." + suffix;
+		}
+		
+		File file = new File(path);
+		if(! file.exists()) {
+			file.createNewFile();
+		}
+		FileWriter writer = new FileWriter(file);
+		writer.write(content);
+		writer.close();
 	}
 	
 }
