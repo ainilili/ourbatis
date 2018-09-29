@@ -42,3 +42,7 @@ target
 .DS_Store
 .classpath
 .settings
+/.classpath
+/target
+/.settings
+/.project
