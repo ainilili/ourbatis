@@ -3,6 +3,7 @@ package org.nico.ourbatis.loader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,26 +30,26 @@ import org.nico.ourbatis.utils.StreamUtils;
  * @time 2018-08-23 18:22
  */
 public class OurbatisLoader {
-	
+
 	/**
 	 * Template information queue
 	 */
-	private Map<Class<?>, String> mappers;
-	
+	private Map<Table, String> mappers;
+
 	private Mapping mapping;
-	
+
 	private Noel noel;
-	
+
 	private SqlSessionFactory sqlSessionFactory;
-	
+
 	private Configuration configuration;
-	
+
 	private String baseTemplateUri;
-	
+
 	private String baseTemplateContent;
-	
+
 	private String mapperLocations;
-	
+
 	/**
 	 * Get an instance of o through which mapper can be loaded into the mybatis container
 	 * 
@@ -62,7 +63,7 @@ public class OurbatisLoader {
 	public OurbatisLoader(SqlSessionFactory sqlSessionFactory, String baseTemplateUri, String mapperLocations) {
 		this.sqlSessionFactory = sqlSessionFactory;
 		this.configuration = sqlSessionFactory.getConfiguration();
-		this.mappers = new LinkedHashMap<Class<?>, String>();
+		this.mappers = new LinkedHashMap<Table, String>();
 		this.mapping = new Mapping();
 		this.noel = new Noel();
 		this.baseTemplateUri = baseTemplateUri;
@@ -70,7 +71,7 @@ public class OurbatisLoader {
 		this.baseTemplateContent = StreamUtils.convertToString(this.baseTemplateUri);
 		System.out.println("Ourbatis ->>>>>> Session " + sqlSessionFactory);
 	}
-	
+
 	/**
 	 * After a class is parsed as a template, it is added to the load queue. 
 	 * When the build method is called, the template content in the queue is 
@@ -85,11 +86,11 @@ public class OurbatisLoader {
 		Table entityInfo = mapping.mappingTable(clazz, mapperLocations);
 		if(ClassUtils.forName(entityInfo.getMapperClassName()) != null) {
 			NoelResult result = noel.el(baseTemplateContent, entityInfo);
-			mappers.put(clazz, result.getFormat());
+			mappers.put(entityInfo, result.getFormat());
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Add all the class files under the package by scanning the package path
 	 * 
@@ -110,36 +111,39 @@ public class OurbatisLoader {
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Calling this method will load the template information from the queue into the Mybatis container in turn
 	 */
 	public void build() {
-		if(! mappers.isEmpty()) {
+		if (!this.mappers.isEmpty()) {
 			boolean openPrint = Ourbatis.print != null;
-			mappers.forEach((clazz, mapper) -> {
-				System.out.println("Ourbatis ->> Building " + clazz.getName());
-				InputStream mapperStream = new ByteArrayInputStream(mapper.getBytes());
-				XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperStream, configuration, null, configuration.getSqlFragments());
+			this.mappers.forEach((entityInfo, mapper) -> {
+				System.out.println("Ourbatis ->> Building " + entityInfo.getDomainClassName());
+				ByteArrayInputStream mapperStream = new ByteArrayInputStream(mapper.getBytes());
+				XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperStream, this.configuration,
+						mapperStream.toString(), this.configuration.getSqlFragments());
 				xmlMapperBuilder.parse();
+
 				try {
-					if(openPrint) {
-						StreamUtils.write(Ourbatis.print, clazz.getName(), ".xml", mapper);
-						System.out.println("Ourbatis ->> Writing  " + clazz.getName());
+					if (openPrint) {
+						StreamUtils.write(Ourbatis.print, entityInfo.getDomainClassName(), ".xml", mapper);
+						System.out.println("Ourbatis ->> Writing  " + entityInfo.getDomainClassName());
 					}
-				}catch(Exception e) {
-					e.printStackTrace();
+				} catch (Exception arg6) {
+					arg6.printStackTrace();
 				}
+
 			});
 		}
 		System.out.println();
 	}
-	
-	public final Map<Class<?>, String> getMappers() {
+
+	public Map<Table, String> getMappers() {
 		return mappers;
 	}
 
-	public final void setMappers(Map<Class<?>, String> mappers) {
+	public void setMappers(Map<Table, String> mappers) {
 		this.mappers = mappers;
 	}
 
@@ -150,5 +154,5 @@ public class OurbatisLoader {
 	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
 		this.sqlSessionFactory = sqlSessionFactory;
 	}
-	
+
 }
