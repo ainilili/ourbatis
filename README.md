@@ -1,5 +1,3 @@
-# outbatis
-General XML solution based on mybatis
 # Ourbatis
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.smallnico/ourbatis/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.smallnico/ourbatis/)
