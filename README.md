@@ -32,7 +32,7 @@
 成功的将Ourbatis嵌入您的应用之后，需要简单的配置一下：
 ```
 ourbatis.template-locations=ourbatis.xml
-ourbatis.domain-locations=com.nico.ourbatis.entity.po
+ourbatis.domain-locations=org.nico.ourbatis.domain
 ```
  - ```template-locations```表示模板所在**classpath**下的相对路径。
  - ```domain-locations```代表实体类所在包
