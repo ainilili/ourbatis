@@ -2,8 +2,6 @@ package org.nico.ourbatis.utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
 
 import org.nico.ourbatis.annotation.MapperLocations;
 import org.nico.ourbatis.annotation.RenderIgnore;

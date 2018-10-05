@@ -1,4 +1,4 @@
-package org.nico.ourbatis.mapping;
+package org.nico.ourbatis.mapper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.nico.ourbatis.entity.Column;
 import org.nico.ourbatis.entity.Table;
 import org.nico.ourbatis.utils.ArrayUtils;
+import org.nico.ourbatis.utils.AssertUtils;
 import org.nico.ourbatis.utils.ReflactUtils;
 import org.nico.ourbatis.wrapper.JdbcNameWrapper;
 import org.nico.ourbatis.wrapper.JdbcTypeWrapper;
@@ -15,12 +16,12 @@ import org.nico.ourbatis.wrapper.TableNameWrapper;
 import org.nico.ourbatis.wrapper.Wrapper;
 
 /**
- * The purpose of Mapping is to parse an entity class and transform it 
+ * The purpose of Mapper is to parse an entity class and transform it 
  * into database information to serve as metadata when the template is parsed
  * 
  * @author nico
  */
-public class Mapping {
+public class Mapper {
 
 	private Wrapper<Class<?>> tableNameWrapper;
 	
@@ -30,7 +31,7 @@ public class Mapping {
 	
 	private Wrapper<Class<?>> JdbcTypeWrapper;
 	
-	public Mapping() {
+	public Mapper() {
 		this.tableNameWrapper = new TableNameWrapper();
 		this.JdbcNameWrapper = new JdbcNameWrapper();
 		this.JdbcTypeWrapper = new JdbcTypeWrapper();
@@ -56,6 +57,9 @@ public class Mapping {
 				}
 			}
 		}
+		AssertUtils.assertBlank(primaryColumns, "The entity class needs at least one primary key");
+		AssertUtils.assertBlank(normalColumns, "The entity class needs at least one field");
+		
 		table.setTableName(tableNameWrapper.wrapping(domainClass));
 		table.setPrimaryColumns(primaryColumns);
 		table.setNormalColumns(normalColumns);

@@ -1,6 +1,7 @@
 package org.nico.ourbatis.adapter;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,10 +37,14 @@ public class ForeachAdapter extends AssistAdapter{
 		if(datas.containsKey(listKey)) {
 			Object list = datas.get(listKey);
 			AssertUtils.assertBlank(list, "The object of the loop cannot be empty.");
+			final Map<String, Object> sources = new HashMap<>();
 			if(list instanceof Collection) {
 				new NoelLooper((List<?>) list)
 					.split(split)
-					.each(o -> { return render.rending(o, body, varKey);}, builder::append);
+					.each(o -> { 
+						sources.put(varKey, o);
+						return render.rending(sources, body, varKey);
+					}, builder::append);
 				return builder.toString();
 			}else {
 				throw new OurbatisException("The object of the loop is not a collection.");

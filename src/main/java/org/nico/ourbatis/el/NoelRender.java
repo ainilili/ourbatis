@@ -1,6 +1,5 @@
 package org.nico.ourbatis.el;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -165,7 +164,7 @@ public class NoelRender {
 	public Object getChain(Object obj, String fieldNames) {
 		String[] fieldSegs = fieldNames.split("\\" + split);
 		Object target = obj;
-		for(int index = 1; index < fieldSegs.length; index ++) {
+		for(int index = 0; index < fieldSegs.length; index ++) {
 			String segs = fieldSegs[index];
 			if(target != null) {
 				target = getValue(target, segs);
@@ -195,5 +194,4 @@ public class NoelRender {
 		}
 		return target;
 	}
-
 }

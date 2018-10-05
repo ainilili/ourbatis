@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="@{mapperClassName}">
+    <resultMap id="BaseResultMap" type="@{domainClassName}">
+		<ourbatis:foreach list="primaryColumns" var="elem" >
+			<id column="@{elem.jdbcName}" property="@{elem.javaName}" />
+		</ourbatis:foreach>
+		<ourbatis:foreach list="normalColumns" var="elem" >
+			<result column="@{elem.jdbcName}" property="@{elem.javaName}" />
+		</ourbatis:foreach>
+    </resultMap>
+
+   <sql id="Base_Column_List">
+   		<ourbatis:foreach list="allColumns" var="elem" split="," >
+			`@{elem.jdbcName}`
+		</ourbatis:foreach>
+    </sql>
+    
+    <select id="selectById" parameterType="java.lang.Object" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from @{tableName}
+        where 1 = 1 
+        <ourbatis:foreach list="primaryColumns" var="elem" >
+        	and `@{elem.jdbcName}` = #{@{elem.javaName}}
+		</ourbatis:foreach>
+    </select>
+    
+    <select id="selectEntity" parameterType="@{domainClassName}" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from @{tableName}
+        where 1 = 1
+        <ourbatis:foreach list="allColumns" var="elem" >
+			<if test="@{elem.javaName} != null" >
+            	and `@{elem.jdbcName}` = #{@{elem.javaName}}
+       	 	</if>
+		</ourbatis:foreach>
+        limit 1
+    </select>
+    
+    <select id="selectCount" parameterType="@{domainClassName}" resultType="long">
+        select count(0)
+        from @{tableName}
+        where 1 = 1
+        <ourbatis:foreach list="allColumns" var="elem" >
+			<if test="@{elem.javaName} != null" >
+            	and `@{elem.jdbcName}` = #{@{elem.javaName}}
+       	 	</if>
+		</ourbatis:foreach>
+        limit 1
+    </select>
+    
+    <select id="selectPage" parameterType="org.nico.ourbatis.entity.Page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from @{tableName}
+        where 1 = 1
+        <if test="entity != null">
+        	<ourbatis:foreach list="allColumns" var="elem" >
+				<if test="entity.@{elem.javaName} != null" >
+	            	and `@{elem.jdbcName}` = #{entity.@{elem.javaName}}
+	       	 	</if>
+			</ourbatis:foreach>
+        </if>
+        <if test="orderBy != null">
+         order by ${orderBy}
+        </if>
+        <if test="start != null and end != null">
+         limit ${start},${end}
+        </if>
+    </select>
+    
+    <select id="selectList" parameterType="@{domainClassName}" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from @{tableName}
+        where 1 = 1
+         <ourbatis:foreach list="allColumns" var="elem" >
+			<if test="@{elem.javaName} != null" >
+	            and `@{elem.jdbcName}` = #{@{elem.javaName}}
+	        </if>
+		</ourbatis:foreach>
+    </select>
+    
+    <select id="selectId" parameterType="@{domainClassName}" resultType="java.lang.Object">
+        select 
+        <ourbatis:foreach list="primaryColumns" var="elem" split=",">
+			`@{elem.jdbcName}`
+		</ourbatis:foreach>
+         from @{tableName}
+        where 1 = 1
+        <ourbatis:foreach list="allColumns" var="elem" >
+			<if test="@{elem.javaName} != null" >
+	            and `@{elem.jdbcName}` = #{@{elem.javaName}}
+	        </if>
+		</ourbatis:foreach>
+         limit 1
+    </select>
+    
+    <select id="selectIds" parameterType="@{domainClassName}" resultType="java.lang.Object">
+        select 
+ 		<ourbatis:foreach list="primaryColumns" var="elem" split=",">
+			`@{elem.jdbcName}`
+		</ourbatis:foreach>
+        from @{tableName}
+        where 1 = 1
+        <ourbatis:foreach list="normalColumns" var="elem" >
+			<if test="@{elem.javaName} != null" >
+	            and `@{elem.jdbcName}` = #{@{elem.javaName}}
+	        </if>
+		</ourbatis:foreach>
+    </select>
+    
+    <delete id="deleteById" parameterType="java.lang.Object">
+        delete 
+		from @{tableName} 
+		where 1=1 
+		<ourbatis:foreach list="primaryColumns" var="elem" >
+			and `@{elem.jdbcName}` = #{@{elem.javaName}}
+		</ourbatis:foreach>
+    </delete>
+	
+    <insert id="insert" keyProperty="@{primaryColumns.0.jdbcName}" useGeneratedKeys="true" parameterType="@{domainClassName}" >
+        insert into @{tableName}
+        (
+			<include refid="Base_Column_List"/>
+        )
+        values (
+			<ourbatis:foreach list="allColumns" var="elem" split="," >
+		        #{@{elem.javaName}}
+			</ourbatis:foreach>
+        )
+    </insert>
+	
+    <insert id="insertSelective" keyProperty="@{primaryColumns.0.jdbcName}" useGeneratedKeys="true" parameterType="@{domainClassName}" >
+        insert into @{tableName}
+        (
+			<ourbatis:foreach list="primaryColumns" var="elem" split=",">
+		            `@{elem.jdbcName}`
+			</ourbatis:foreach>
+			<ourbatis:foreach list="normalColumns" var="elem">
+				<if test="@{elem.javaName} != null" >
+		            ,`@{elem.jdbcName}`
+		        </if>
+			</ourbatis:foreach>
+        )
+        values (
+			<ourbatis:foreach list="primaryColumns" var="elem">
+		             #{@{elem.javaName}}
+			</ourbatis:foreach>
+			<ourbatis:foreach list="normalColumns" var="elem">
+				<if test="@{elem.javaName} != null" >
+		            , #{@{elem.javaName}}
+		        </if>
+			</ourbatis:foreach>
+        )
+    </insert>
+    
+     <insert id="insertBatch" keyProperty="@{primaryColumns.0.jdbcName}" useGeneratedKeys="true" parameterType="java.util.List" >  
+        insert into @{tableName}
+        (
+			<include refid="Base_Column_List"/>
+        )
+        values 
+        <foreach collection="list" index="index" item="item" separator=",">  
+	        (
+		        <ourbatis:foreach list="allColumns" var="elem" split="," >
+					#{item.@{elem.javaName}}
+				</ourbatis:foreach>
+	        )
+        </foreach>
+    </insert>
+    
+    <update id="update" parameterType="@{domainClassName}">
+        update @{tableName}
+        <set>
+        <ourbatis:foreach list="normalColumns" var="elem" split=",">
+	          `@{elem.jdbcName}` = #{@{elem.javaName}}
+		</ourbatis:foreach>
+        </set>
+        where 1=1 
+        <ourbatis:foreach list="primaryColumns" var="elem" >
+			and `@{elem.jdbcName}` = #{@{elem.javaName}}
+		</ourbatis:foreach>
+    </update>
+    
+    <update id="updateSelective" parameterType="@{domainClassName}">
+        update @{tableName}
+        <set>
+	        <ourbatis:foreach list="primaryColumns" var="elem" split=",">
+			      `@{elem.jdbcName}` = #{@{elem.javaName}}
+			</ourbatis:foreach>
+	        <ourbatis:foreach list="normalColumns" var="elem">
+		          <if test="@{elem.javaName} != null" >
+		          ,`@{elem.jdbcName}` = #{@{elem.javaName}}
+		          </if>
+			</ourbatis:foreach>
+        </set>
+        where 1=1 
+        <ourbatis:foreach list="primaryColumns" var="elem" >
+			and `@{elem.jdbcName}` = #{@{elem.javaName}}
+		</ourbatis:foreach>
+    </update>
+    
+    <update id="updateBatch" parameterType="java.util.List">  
+        <foreach  collection="list" index="index" item="item"  separator=";">     
+           update @{tableName}
+	        <set>
+	        <ourbatis:foreach list="normalColumns" var="elem" split=",">
+		          `@{elem.jdbcName}` = #{item.@{elem.javaName}}
+			</ourbatis:foreach>
+	        </set>
+	        where 1=1 
+	        <ourbatis:foreach list="primaryColumns" var="elem" >
+				and `@{elem.jdbcName}` = #{item.@{elem.javaName}}
+			</ourbatis:foreach>
+        </foreach>
+    </update>
+	
+    <delete id="deleteBatch" parameterType="java.util.List"> 
+        delete from @{tableName} where @{primaryColumns.0.jdbcName} in
+        <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">  
+            #{item}  
+        </foreach> 
+    </delete>
+ 
+    <delete id="delete" parameterType="@{domainClassName}"> 
+        delete from @{tableName} where  1 = 1
+        <ourbatis:foreach list="allColumns" var="elem" >
+			<if test="@{elem.javaName} != null" >
+	            and `@{elem.jdbcName}` = #{@{elem.javaName}}
+	        </if>
+		</ourbatis:foreach>
+    </delete>
+    
+    <ourbatis:ref path="classpath:mapper/@{domainSimpleClassName}.xml" />
+</mapper>
