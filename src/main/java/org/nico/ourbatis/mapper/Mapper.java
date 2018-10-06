@@ -67,10 +67,11 @@ public class Mapper {
 		table.setDomainClass(domainClass);
 		table.setDomainSimpleClassName(domainClass.getSimpleName());
 		table.setDomainClassName(domainClass.getName());
-		if(ReflactUtils.isMapperLocations(domainClass)) {
-			mapperLocations = ReflactUtils.getMapperLocations(domainClass);
+		if(ReflactUtils.isMapperBy(domainClass)) {
+			table.setMapperClassName(ReflactUtils.getMapperBy(domainClass).getName());
+		}else{
+			table.setMapperClassName(mapperLocations + "." + mapperNameWrapper.wrapping(domainClass));
 		}
-		table.setMapperClassName(mapperLocations + "." + mapperNameWrapper.wrapping(domainClass));
 		return table;
 	}
 	

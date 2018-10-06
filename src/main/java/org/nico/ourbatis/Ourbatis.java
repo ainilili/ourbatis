@@ -12,6 +12,7 @@ import org.nico.ourbatis.adapter.AssistAdapter;
 import org.nico.ourbatis.adapter.ForeachAdapter;
 import org.nico.ourbatis.adapter.RefAdapter;
 import org.nico.ourbatis.wrapper.Wrapper;
+import org.nico.ourbatis.wrapper.simple.SlideBarJointWrapper;
 
 /**
  * Ourbatis configuration center defines some global parameters

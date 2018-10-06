@@ -3,8 +3,8 @@ package org.nico.ourbatis.loader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.session.Configuration;
@@ -94,7 +94,7 @@ public class OurbatisLoader {
 	 */
 	public OurbatisLoader add(String packet) {
 		try {
-			Set<Class<? extends Class<?>>> classes = ClassUtils.getClasses(packet);
+			List<Class<?>> classes = ClassUtils.getClasses(packet);
 			if(classes != null && ! classes.isEmpty()) {
 				classes.forEach(clazz -> {
 					add(clazz);

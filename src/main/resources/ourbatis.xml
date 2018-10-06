@@ -234,5 +234,5 @@
 		</ourbatis:foreach>
     </delete>
     
-    <ourbatis:ref path="classpath:mapper/@{domainSimpleClassName}.xml" />
+    <ourbatis:ref path="classpath:ourbatis-mappers/@{domainSimpleClassName}Mapper.xml" />
 </mapper>

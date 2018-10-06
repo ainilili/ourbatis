@@ -3,7 +3,7 @@ package org.nico.ourbatis.utils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-import org.nico.ourbatis.annotation.MapperLocations;
+import org.nico.ourbatis.annotation.MapperBy;
 import org.nico.ourbatis.annotation.RenderIgnore;
 import org.nico.ourbatis.annotation.RenderName;
 import org.nico.ourbatis.annotation.RenderPrimary;
@@ -46,12 +46,12 @@ public class ReflactUtils {
 		return isAnnotation(clazz, RenderName.class);
 	}
 	
-	public static boolean isMapperLocations(Class<?> clazz){
-		return isAnnotation(clazz, MapperLocations.class);
+	public static boolean isMapperBy(Class<?> clazz){
+		return isAnnotation(clazz, MapperBy.class);
 	}
 	
-	public static String getMapperLocations(Class<?> clazz){
-		return getAnnotation(clazz, MapperLocations.class).value();
+	public static Class<?> getMapperBy(Class<?> clazz){
+		return getAnnotation(clazz, MapperBy.class).value();
 	}
 	
 	public static String getRenderName(Field field){
