@@ -18,7 +18,7 @@
 <dependency>
   <groupId>com.smallnico</groupId>
   <artifactId>ourbatis-spring-boot-starter</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
 </dependency>
 ```
 如果您想使用独立的Ourbatis，可以添加另一个依赖：
@@ -26,7 +26,7 @@
 <dependency>
   <groupId>com.smallnico</groupId>
   <artifactId>ourbatis</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
 </dependency>
 ```
 成功的将Ourbatis嵌入您的应用之后，需要简单的配置一下：
