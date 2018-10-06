@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE,ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-public @interface MapperLocations {
+public @interface MapperBy {
 
-	String value();
+	Class<?> value();
 }
