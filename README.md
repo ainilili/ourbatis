@@ -4,13 +4,15 @@
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## Introduce
-**ourbatis**是一款轻量级、无侵入、灵活的**mybatis**辅工具，提供一套可配置的轻量级模板，使**mybatis**无**xml**化，让开发更便捷！
+让Mybatis开发更加简洁轻松，提供通用的操作方法及自定义入口，让开发无XML化，提高工作效率，减少编码时间！
 
-使用**Ourbatis**的好处：
- - **1**、表字段修改将不是问题。
- - **2**、通用和自定义的SQL标签完全隔离，让维护更加轻松。
- - **3**、完全无侵入性，Mybatis和Ourbatis可同时使用。
- - **4**、模板高灵活，高扩展性。
+**Ourbatis**的特性：
+ - **1**、简洁方便，可以让Mybatis无XML化开发。
+ - **2**、优雅解耦，通用和自定义的SQL标签完全隔离，让维护更加轻松。
+ - **3**、无侵入性，Mybatis和Ourbatis可同时使用，配置简洁。
+ - **4**、灵活可控，通用模板可自定义及扩展。
+ - **5**、部署快捷，只需要一个依赖，两个配置，即可直接运行。
+ - **6**、项目活跃，Nico也会在日常开发中使用并优化Ourbatis，将会率先踩坑填坑。
  
 ## Install
 如果您的应用使用Spring Boot，您可以通过添加以下依赖来使用Ourbatis：
@@ -44,15 +46,9 @@ public interface UserMapper extends OurbatisMapper<User, Integer>{}
 至此，Ourbatis的部署工作完成！Ourbatis是辅助Mybatis工作的，所以Mybatis部署必不可少，Ourbatis无任何侵入性，且Ourbatis的部署过程不会干扰Mybatis的部署，可以说，二者是完全相互独立的！
 
 另外，如果您想自定义模板，需要重写```ourbatis.xml```和```OurbatisMapper.java```，可以参考以下文件：
-```
-https://github.com/ainilili/ourbatis/blob/master/src/main/resources/ourbatis.xml
-https://github.com/ainilili/ourbatis/blob/master/src/main/java/org/nico/ourbatis/mapper/OurbatisMapper.java
-```
+[ourbatis.xml](https://github.com/ainilili/ourbatis/blob/master/src/main/resources/ourbatis.xml)
+[OurbatisMapper.xml](https://github.com/ainilili/ourbatis/blob/master/src/main/java/org/nico/ourbatis/mapper/OurbatisMapper.java)
 ## Simple
-```
-git clone https://github.com/ainilili/ourbatis-simple
-```
+[Sprint-Boot](https://github.com/ainilili/ourbatis-simple)
 ## Doc
-```
-[https://github.com/ainilili/ourbatis/wiki](https://github.com/ainilili/ourbatis/wiki)
-```
+[Wiki](https://github.com/ainilili/ourbatis/wiki)
