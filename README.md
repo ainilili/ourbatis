@@ -54,5 +54,5 @@ git clone https://github.com/ainilili/ourbatis-simple
 ```
 ## Doc
 ```
-待续
+[https://github.com/ainilili/ourbatis/wiki](https://github.com/ainilili/ourbatis/wiki)
 ```
