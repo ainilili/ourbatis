@@ -46,7 +46,9 @@ public interface UserMapper extends OurbatisMapper<User, Integer>{}
 至此，Ourbatis的部署工作完成！Ourbatis是辅助Mybatis工作的，所以Mybatis部署必不可少，Ourbatis无任何侵入性，且Ourbatis的部署过程不会干扰Mybatis的部署，可以说，二者是完全相互独立的！
 
 另外，如果您想自定义模板，需要重写```ourbatis.xml```和```OurbatisMapper.java```，可以参考以下文件：
+
 [ourbatis.xml](https://github.com/ainilili/ourbatis/blob/master/src/main/resources/ourbatis.xml)
+
 [OurbatisMapper.xml](https://github.com/ainilili/ourbatis/blob/master/src/main/java/org/nico/ourbatis/mapper/OurbatisMapper.java)
 ## Simple
 [Sprint-Boot](https://github.com/ainilili/ourbatis-simple)
