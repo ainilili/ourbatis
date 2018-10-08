@@ -47,9 +47,9 @@ public interface UserMapper extends OurbatisMapper<User, Integer>{}
 
 另外，如果您想自定义模板，需要重写```ourbatis.xml```和```OurbatisMapper.java```，可以参考以下文件：
 
- - [Ourbatis.xml](https://github.com/ainilili/ourbatis/blob/master/src/main/resources/ourbatis.xml)
- - [OurbatisMapper.xml](https://github.com/ainilili/ourbatis/blob/master/src/main/java/org/nico/ourbatis/mapper/OurbatisMapper.java)
+ - [Ourbatis.xml文件](https://github.com/ainilili/ourbatis/blob/master/src/main/resources/ourbatis.xml)
+ - [OurbatisMapper.java文件](https://github.com/ainilili/ourbatis/blob/master/src/main/java/org/nico/ourbatis/mapper/OurbatisMapper.java)
 ## Simple
- - [Sprint-Boot](https://github.com/ainilili/ourbatis-simple)
-## Doc
- - [Wiki](https://github.com/ainilili/ourbatis/wiki)
+ - [Sprint-Boot案例](https://github.com/ainilili/ourbatis-simple)
+## Wiki
+ - [Wiki文档](https://github.com/ainilili/ourbatis/wiki)
