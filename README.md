@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## Introduce
-**Ourbatis**为简化**Mybatis**而生，拥有无侵入性、小巧灵活及快速入手的特点，可以帮助使用者节省编写通用数据操作所花费的时间，让同学们不会因为表里增加了一个字段而大费周折的去重新定义**SQL**。
+**ourbatis**是一款轻量级、无侵入、灵活的**mybatis**辅工具，提供一套可配置的轻量级模板，使**mybatis**无**xml**化，让开发更便捷！
 
 使用**Ourbatis**的好处：
  - **1**、表字段修改将不是问题。
