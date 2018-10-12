@@ -56,9 +56,9 @@ public interface UserMapper extends OurbatisMapper<User, Integer>{}
  - [Wiki文档](https://github.com/ainilili/ourbatis/wiki)
 
 ## Feedback
-开发者QQ: 473048656
-QQ交流群：177563526
-邮箱地址：ainililia@163.com
+ - 开发者QQ: 473048656
+ - QQ交流群：177563526
+ - 邮箱地址：ainililia@163.com
 
  
  
