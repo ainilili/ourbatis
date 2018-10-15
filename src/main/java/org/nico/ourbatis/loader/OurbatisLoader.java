@@ -13,7 +13,7 @@ import org.nico.ourbatis.Ourbatis;
 import org.nico.ourbatis.el.Noel;
 import org.nico.ourbatis.el.NoelResult;
 import org.nico.ourbatis.entity.Table;
-import org.nico.ourbatis.mapper.Mapper;
+import org.nico.ourbatis.mapping.MapperMapping;
 import org.nico.ourbatis.utils.ClassUtils;
 import org.nico.ourbatis.utils.StreamUtils;
 
@@ -30,7 +30,7 @@ public class OurbatisLoader {
 	 */
 	private Map<Table, String> mappers;
 
-	private Mapper mapper;
+	private MapperMapping mapper;
 
 	private Noel noel;
 
@@ -58,7 +58,7 @@ public class OurbatisLoader {
 		this.sqlSessionFactory = sqlSessionFactory;
 		this.configuration = sqlSessionFactory.getConfiguration();
 		this.mappers = new LinkedHashMap<Table, String>();
-		this.mapper = new Mapper();
+		this.mapper = new MapperMapping();
 		this.noel = new Noel();
 		this.baseTemplateUri = baseTemplateUri;
 		this.mapperLocations = mapperLocations;
