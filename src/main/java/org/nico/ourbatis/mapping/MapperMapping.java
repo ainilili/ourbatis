@@ -1,4 +1,4 @@
-package org.nico.ourbatis.mapper;
+package org.nico.ourbatis.mapping;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -16,12 +16,12 @@ import org.nico.ourbatis.wrapper.TableNameWrapper;
 import org.nico.ourbatis.wrapper.Wrapper;
 
 /**
- * The purpose of Mapper is to parse an entity class and transform it 
+ * The purpose of Mapping is to parse an entity class and transform it 
  * into database information to serve as metadata when the template is parsed
  * 
  * @author nico
  */
-public class Mapper {
+public class MapperMapping {
 
 	private Wrapper<Class<?>> tableNameWrapper;
 	
@@ -31,7 +31,7 @@ public class Mapper {
 	
 	private Wrapper<Class<?>> JdbcTypeWrapper;
 	
-	public Mapper() {
+	public MapperMapping() {
 		this.tableNameWrapper = new TableNameWrapper();
 		this.JdbcNameWrapper = new JdbcNameWrapper();
 		this.JdbcTypeWrapper = new JdbcTypeWrapper();

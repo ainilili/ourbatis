@@ -6,40 +6,56 @@ package org.nico.ourbatis.entity;
  * @author nico
  */
 public class Page<T> {
-
+	
+	/**
+	 * Limit start
+	 */
 	protected Long start;
 	
+	/**
+	 * Limit end
+	 */
 	protected Long end;
 	
+	/**
+	 * Sorting conditions, example "create_time desc"
+	 */
 	protected String orderBy;
 	
+	/**
+	 * Query condition
+	 */
 	protected T entity;
 	
-	public static <T> Page<T> start(long page, long length){
+	public static Page<Object> start(long page, long length){
 		return start(page, length, null, null);
 	}
 
-	public static <T> Page<T> start(long page, long length, T entity){
+	public static Page<Object> start(long page, long length, Object entity){
 		return start(page, length, entity, null);
 	}
 	
-	public static <T> Page<T> start(long page, long length, String orderBy){
+	public static Page<Object> start(long page, long length, String orderBy){
 		return start(page, length, null, orderBy);
 	}
 	
-	public static <T> Page<T> start(Long page, Long length, T entity, String orderBy){
-		if(page < 1) page = 1L;
-		if(length < 1) length = 0L;
-		long start = (page - 1) * length;
-		long end = length;
-		return new Page<T>().setStart(start).setEnd(end).setEntity(entity).setOrderBy(orderBy);
+	public static Page<Object> start(Long page, Long length, Object entity, String orderBy){
+		Long start = null;
+		Long end = null;
+		if(page != null && length != null) {
+			if(page < 1) page = 1L;
+			if(length < 1) length = 0L;
+			start = (page - 1) * length;
+			end = length;
+		}
+		return new Page<Object>().setStart(start).setEnd(end).setEntity(entity).setOrderBy(orderBy);
 	}
 	
-	public static <T> Page<T> start(String orderBy){
+	public static Page<Object> start(String orderBy){
 		return start(null, null, null, orderBy);
 	}
 	
-	public static <T> Page<T> start(T entity, String orderBy){
+	public static Page<Object> start(Object entity, String orderBy){
 		return start(null, null, entity, orderBy);
 	}
 
@@ -61,6 +77,10 @@ public class Page<T> {
 	public Page<T> setEntity(T entity) {
 		this.entity = entity;
 		return this;
+	}
+
+	public final T getEntity() {
+		return entity;
 	}
 	
 }

@@ -29,7 +29,7 @@
 <dependency>
   <groupId>com.smallnico</groupId>
   <artifactId>ourbatis-spring-boot-starter</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 如果您想使用独立的Ourbatis，可以添加另一个依赖：
@@ -37,7 +37,7 @@
 <dependency>
   <groupId>com.smallnico</groupId>
   <artifactId>ourbatis</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
 </dependency>
 ```
 成功的将Ourbatis嵌入您的应用之后，需要简单的配置一下：
@@ -54,10 +54,10 @@ public interface UserMapper extends OurbatisMapper<User, Integer>{}
 ```
 至此，Ourbatis的部署工作完成！Ourbatis是辅助Mybatis工作的，所以Mybatis部署必不可少，Ourbatis无任何侵入性，且Ourbatis的部署过程不会干扰Mybatis的部署，可以说，二者是完全相互独立的！
 
-另外，如果您想自定义模板，需要重写```ourbatis.xml```和```OurbatisMapper.java```，可以参考以下文件：
+另外，如果您想自定义模板，需要重写```ourbatis.xml```和```SimpleMapper.java```，可以参考以下文件：
 
  - [Ourbatis.xml文件](https://github.com/ainilili/ourbatis/blob/master/src/main/resources/ourbatis.xml)
- - [OurbatisMapper.java文件](https://github.com/ainilili/ourbatis/blob/master/src/main/java/org/nico/ourbatis/mapper/OurbatisMapper.java)
+ - [OurbatisMapper.java文件](https://github.com/ainilili/ourbatis/blob/master/src/main/java/org/nico/ourbatis/mapper/SimpleMapper.java)
 ## Simple
  - [Sprint-Boot案例](https://github.com/ainilili/ourbatis-simple)
 ## Wiki

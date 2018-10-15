@@ -64,9 +64,13 @@ public class StreamUtils {
 		if(! file.exists()) {
 			file.createNewFile();
 		}
-		FileWriter writer = new FileWriter(file);
-		writer.write(content);
-		writer.close();
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(file);
+			writer.write(content);
+		}finally {
+			writer.close();
+		}
 	}
 	
 }
