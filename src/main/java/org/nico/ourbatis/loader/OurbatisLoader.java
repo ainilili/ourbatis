@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.nico.ourbatis.Ourbatis;
@@ -25,6 +27,8 @@ import org.nico.ourbatis.utils.StreamUtils;
  */
 public class OurbatisLoader {
 
+	private static final Log log = LogFactory.getLog(OurbatisLoader.class);
+	
 	/**
 	 * Template information queue
 	 */
@@ -63,7 +67,7 @@ public class OurbatisLoader {
 		this.baseTemplateUri = baseTemplateUri;
 		this.mapperLocations = mapperLocations;
 		this.baseTemplateContent = StreamUtils.convertToString(this.baseTemplateUri);
-		System.out.println("Ourbatis ->>>>>> Session " + sqlSessionFactory);
+		log.debug("Start processing the data source session factory " + sqlSessionFactory);
 	}
 
 	/**
@@ -76,7 +80,7 @@ public class OurbatisLoader {
 	 * @return This instance 		
 	 */
 	public OurbatisLoader add(Class<?> clazz) {
-		System.out.println("Ourbatis ->> Loading " + clazz.getName());
+		log.debug(">>  Loading " + clazz.getName());
 		Table entityInfo = mapper.mappingTable(clazz, mapperLocations);
 		if(ClassUtils.forName(entityInfo.getMapperClassName()) != null) {
 			NoelResult result = noel.el(baseTemplateContent, entityInfo);
@@ -116,19 +120,18 @@ public class OurbatisLoader {
 				try {
 					if (openPrint) {
 						StreamUtils.write(Ourbatis.print, entityInfo.getDomainClassName(), ".xml", mapper);
-						System.out.println("Ourbatis ->> Writing  " + entityInfo.getDomainClassName());
+						log.debug(">>  Writing  " + entityInfo.getDomainClassName());
 					}
 				} catch (Exception arg6) {
 					arg6.printStackTrace();
 				}
-				System.out.println("Ourbatis ->> Building " + entityInfo.getDomainClassName());
+				log.debug(">>  Building " + entityInfo.getDomainClassName());
 				ByteArrayInputStream mapperStream = new ByteArrayInputStream(mapper.getBytes());
 				XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperStream, this.configuration,
 						mapperStream.toString(), this.configuration.getSqlFragments());
 				xmlMapperBuilder.parse();
 			});
 		}
-		System.out.println();
 	}
 
 	public Map<Table, String> getMappers() {
