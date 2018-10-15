@@ -24,7 +24,7 @@
  - **7**、项目活跃，Nico也会在日常开发中使用并优化Ourbatis，将会率先踩坑填坑。
  
 ## Install
-如果您的应用使用Spring Boot，您可以通过添加以下依赖来使用Ourbatis：
+以Spring Boot项目为例，添加一下依赖
 ```
 <dependency>
   <groupId>com.smallnico</groupId>
@@ -32,32 +32,18 @@
   <version>1.0.5</version>
 </dependency>
 ```
-如果您想使用独立的Ourbatis，可以添加另一个依赖：
+然后配置一下您的实体类所在的包路径：
 ```
-<dependency>
-  <groupId>com.smallnico</groupId>
-  <artifactId>ourbatis</artifactId>
-  <version>1.0.5</version>
-</dependency>
-```
-成功的将Ourbatis嵌入您的应用之后，需要简单的配置一下：
-```
-ourbatis.template-locations=ourbatis.xml
 ourbatis.domain-locations=org.nico.ourbatis.domain
 ```
- - ```template-locations```表示模板所在**classpath**下的相对路径。
- - ```domain-locations```代表实体类所在包
-
-Ourbatis内部提供默认的通用模板和Mapper接口，您的Mapper只需要继承OurbatisMapper即可：
+如果您想查看Ourbatis启动日志，您可以追加以下配置：
 ```
-public interface UserMapper extends OurbatisMapper<User, Integer>{}
+logging.level.org.nico.ourbatis=debug
 ```
-至此，Ourbatis的部署工作完成！Ourbatis是辅助Mybatis工作的，所以Mybatis部署必不可少，Ourbatis无任何侵入性，且Ourbatis的部署过程不会干扰Mybatis的部署，可以说，二者是完全相互独立的！
-
-另外，如果您想自定义模板，需要重写```ourbatis.xml```和```SimpleMapper.java```，可以参考以下文件：
-
- - [Ourbatis.xml文件](https://github.com/ainilili/ourbatis/blob/master/src/main/resources/ourbatis.xml)
- - [OurbatisMapper.java文件](https://github.com/ainilili/ourbatis/blob/master/src/main/java/org/nico/ourbatis/mapper/SimpleMapper.java)
+接下来，您的Mapper只需要继承SimpleMapper接口即可：
+```
+public interface UserMapper extends SimpleMapper<User, Integer>{}
+```
 ## Simple
  - [Sprint-Boot案例](https://github.com/ainilili/ourbatis-simple)
 ## Wiki
@@ -67,7 +53,3 @@ public interface UserMapper extends OurbatisMapper<User, Integer>{}
  - ```作者QQ``` 473048656
  - ```QQ交流群``` 177563526
  - ```邮箱地址``` ainililia@163.com
-
- 
- 
- 
