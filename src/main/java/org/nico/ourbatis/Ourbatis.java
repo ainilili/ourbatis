@@ -22,6 +22,11 @@ import org.nico.ourbatis.wrapper.simple.SlideBarJointWrapper;
 public class Ourbatis {
 	
 	/**
+	 * Template location
+	 */
+	public static String templateLocation = "ourbatis.xml";
+	
+	/**
 	 * Template matching prefix
 	 */
 	public static String prefix = "@{";
