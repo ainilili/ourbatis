@@ -21,15 +21,10 @@ import org.nico.ourbatis.wrapper.simple.SlideBarJointWrapper;
  */
 public class Ourbatis {
 	
-	static {
-		System.out.println(" _____   _   _   _____    _____       ___   _____   _   _____  \r\n" + 
-				"/  _  \\ | | | | |  _  \\  |  _  \\     /   | |_   _| | | /  ___/ \r\n" + 
-				"| | | | | | | | | |_| |  | |_| |    / /| |   | |   | | | |___  \r\n" + 
-				"| | | | | | | | |  _  /  |  _  {   / /_| |   | |   | | \\___  \\ \r\n" + 
-				"| |_| | | |_| | | | \\ \\  | |_| |  / /  | |   | |   | |  ___| | \r\n" + 
-				"\\_____/ \\_____/ |_|  \\_\\ |_____/ /_/   |_|   |_|   |_| /_____/   ~LOADING\r\n" +
-				"===========================================================================\\\\");
-	}
+	/**
+	 * Template location
+	 */
+	public static String templateLocation = "ourbatis.xml";
 	
 	/**
 	 * Template matching prefix
