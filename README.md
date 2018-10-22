@@ -12,19 +12,19 @@
 | |_| | | |_| | | | \ \  | |_| |  / /  | |   | |   | |  ___| | 
 \_____/ \_____/ |_|  \_\ |_____/ /_/   |_|   |_|   |_| /_____/ 
 ```
-让Mybatis开发更加简洁轻松，提供通用的操作方法及自定义入口，让开发无XML化，提高工作效率，减少编码时间！
+To make the development of Mybatis more simple and easy, to provide common operation methods and custom entrance, to make the development free from XML, to improve work efficiency and reduce coding time!
 
-**Ourbatis**的特性：
- - **1**、简洁方便，可以让Mybatis无XML化开发。
- - **2**、优雅解耦，通用和自定义的SQL标签完全隔离，让维护更加轻松。
- - **3**、无侵入性，Mybatis和Ourbatis可同时使用，配置简洁。
- - **4**、灵活可控，通用模板可自定义及扩展。
- - **5**、部署快捷，只需要一个依赖，两个配置，即可直接运行。
- - **6**、多数据源，在多数据源环境下也可以照常使用。
- - **7**、项目活跃，Nico也会在日常开发中使用并优化Ourbatis，将会率先踩坑填坑。
+Features of **Ourbatis**
+- **1**, simple and convenient, can make Mybatis develop without XML.
+- **2**, elegant decoupling, complete isolation of generic and custom SQL tags, making maintenance easier.
+- **3**, non-invasive, Mybatis and Ourbatis can be used simultaneously, and the configuration is simple.
+- **4**, flexible and controllable, general template can be customized and extended.
+- **5**, quick deployment, only one dependency and two configurations are needed to run directly.
+- **6**, multi-data source. It can also be used as usual in multi-data source environment.
+- **7**, the project is active, Nico will also be used in daily development and optimize Ourbatis, and will be the first to step on the pit and fill the pit.
  
 ## Install
-以Spring Boot项目为例，添加一下依赖
+Take the Spring Boot project for example, and add a dependency
 ```
 <dependency>
   <groupId>com.smallnico</groupId>
@@ -32,24 +32,24 @@
   <version>1.0.5</version>
 </dependency>
 ```
-然后配置一下您的实体类所在的包路径：
+Then configure the package path for your entity class:
 ```
 ourbatis.domain-locations=org.nico.ourbatis.domain
 ```
-如果您想查看Ourbatis启动日志，您可以追加以下配置：
+If you want to see Ourbatis startup logs, you can add the following configuration:
 ```
 logging.level.org.nico.ourbatis=debug
 ```
-接下来，您的Mapper只需要继承SimpleMapper接口即可：
+Next, your Mapper simply inherits the SimpleMapper interface:
 ```
 public interface UserMapper extends SimpleMapper<User, Integer>{}
 ```
 ## Simple
- - [Sprint-Boot案例](https://github.com/ainilili/ourbatis-simple)
+ - [Sprint Boot Case](https://github.com/ainilili/ourbatis-simple)
 ## Wiki
- - [Wiki文档](https://github.com/ainilili/ourbatis/wiki)
+ - [Wiki documentation](https://github.com/ainilili/ourbatis/wiki)
 
 ## Feedback
- - ```作者QQ``` 473048656
- - ```QQ交流群``` 177563526
- - ```邮箱地址``` ainililia@163.com
+ - ```QQ``` 473048656
+ - ```QQ Group``` 177563526
+ - ```Email``` ainililia@163.com
