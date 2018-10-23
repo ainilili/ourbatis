@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.nico.ourbatis.utils.ReflactUtils;
+import org.nico.ourbatis.utils.ReflectUtils;
 
 /**
  * Template rendering tool
@@ -190,7 +190,7 @@ public class NoelRender {
 		}else if(obj instanceof List){
 			target = ((List<?>)obj).get(Integer.valueOf(key));
 		}else {
-			return ReflactUtils.getFieldValue(key, obj);
+			return ReflectUtils.getFieldValue(key, obj);
 		}
 		return target;
 	}

@@ -10,22 +10,22 @@ import org.nico.ourbatis.exception.EmptyMapException;
 
 public class AssertUtils {
 
-	public static void assertNull(Object o) {
-		assertNull(o, "");
+	public static void assertNotNull(Object o) {
+		assertNotNull(o, "");
 	}
 	
-	public static void assertNull(Object o, String message) {
+	public static void assertNotNull(Object o, String message) {
 		if(o == null) {
 			throw new NullPointerException(message);
 		}
 	}
 	
-	public static void assertBlank(Object o) {
-		assertBlank(o, "");
+	public static void assertNotEmpty(Object o) {
+		assertNotEmpty(o, "");
 	}
 	
-	public static void assertBlank(Object o, String message) {
-		assertNull(o);
+	public static void assertNotEmpty(Object o, String message) {
+		assertNotNull(o);
 		if(o instanceof Map) {
 			if(((Map<?, ?>) o).isEmpty()) {
 				throw new EmptyMapException(message);

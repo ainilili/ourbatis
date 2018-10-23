@@ -36,7 +36,7 @@ public class ForeachAdapter extends AssistAdapter{
 		StringBuilder builder = new StringBuilder();
 		if(datas.containsKey(listKey)) {
 			Object list = datas.get(listKey);
-			AssertUtils.assertBlank(list, "The object of the loop cannot be empty.");
+			AssertUtils.assertNotEmpty(list, "The object of the loop cannot be empty.");
 			final Map<String, Object> sources = new HashMap<>();
 			if(list instanceof Collection) {
 				new NoelLooper((List<?>) list)
