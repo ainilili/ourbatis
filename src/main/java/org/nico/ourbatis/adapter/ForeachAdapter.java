@@ -9,6 +9,7 @@ import org.nico.ourbatis.el.NoelLooper;
 import org.nico.ourbatis.el.NoelRender;
 import org.nico.ourbatis.exception.OurbatisException;
 import org.nico.ourbatis.utils.AssertUtils;
+import org.nico.ourbatis.utils.StringUtils;
 import org.nico.ourbatis.xml.Document;
 
 /**
@@ -36,18 +37,21 @@ public class ForeachAdapter extends AssistAdapter{
 		StringBuilder builder = new StringBuilder();
 		if(datas.containsKey(listKey)) {
 			Object list = datas.get(listKey);
-			AssertUtils.assertNotEmpty(list, "The object of the loop cannot be empty.");
-			final Map<String, Object> sources = new HashMap<>();
-			if(list instanceof Collection) {
-				new NoelLooper((List<?>) list)
-					.split(split)
-					.each(o -> { 
-						sources.put(varKey, o);
-						return render.rending(sources, body, varKey);
-					}, builder::append);
-				return builder.toString();
+			if(list != null) {
+				final Map<String, Object> sources = new HashMap<>();
+				if(list instanceof Collection) {
+					new NoelLooper((List<?>) list)
+						.split(split)
+						.each(o -> { 
+							sources.put(varKey, o);
+							return render.rending(sources, body, varKey);
+						}, builder::append);
+					return builder.toString();
+				}else {
+					throw new OurbatisException("The object of the loop is not a collection.");
+				}
 			}else {
-				throw new OurbatisException("The object of the loop is not a collection.");
+				return StringUtils.BLANK;
 			}
 		}else {
 			return body;

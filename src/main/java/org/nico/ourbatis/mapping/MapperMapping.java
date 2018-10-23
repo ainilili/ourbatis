@@ -57,8 +57,8 @@ public class MapperMapping {
 				}
 			}
 		}
-		AssertUtils.assertNotEmpty(primaryColumns, "The entity class needs at least one primary key");
-		AssertUtils.assertNotEmpty(normalColumns, "The entity class needs at least one field");
+		AssertUtils.assertNotEmpty(primaryColumns, "The entity class [" + domainClass.getName() + "] needs at least one primary key.");
+		AssertUtils.assertNotEmpty(normalColumns, "The entity class [" + domainClass.getName() + "] needs at least one field.");
 		
 		table.setTableName(tableNameWrapper.wrapping(domainClass));
 		table.setPrimaryColumns(primaryColumns);
