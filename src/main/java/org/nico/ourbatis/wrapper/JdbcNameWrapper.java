@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.nico.ourbatis.Ourbatis;
 import org.nico.ourbatis.annotation.RenderName;
-import org.nico.ourbatis.utils.ReflactUtils;
+import org.nico.ourbatis.utils.ReflectUtils;
 
 public class JdbcNameWrapper implements Wrapper<Field>{
 
@@ -13,9 +13,9 @@ public class JdbcNameWrapper implements Wrapper<Field>{
 	public String wrapping(Field field) {
 		String fieldName = field.getName();
 		boolean tableRenderFlag = true;
-		if(ReflactUtils.isRenderName(field)){
-			fieldName = ReflactUtils.getRenderName(field);
-			if(! ReflactUtils.getAnnotation(field, RenderName.class).render()){
+		if(ReflectUtils.isRenderName(field)){
+			fieldName = ReflectUtils.getRenderName(field);
+			if(! ReflectUtils.getAnnotation(field, RenderName.class).render()){
 				tableRenderFlag = false;
 			}
 		}

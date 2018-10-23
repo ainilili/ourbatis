@@ -143,7 +143,7 @@ public class Document {
 
 	@Override
 	public String toString() {
-		return "Document [name=" + name + ", tail=" + tail + "]";
+		return "Document [name=" + name + ", tail=" + tail + ", parameters=" + parameters + "]";
 	}
 
 }

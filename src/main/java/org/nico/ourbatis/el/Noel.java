@@ -41,8 +41,8 @@ public class Noel {
 	 */
 	@SuppressWarnings("unchecked")
 	public NoelResult el(String document, Object data) {
-		AssertUtils.assertNull(data);
-		AssertUtils.assertBlank(data);
+		AssertUtils.assertNotNull(data);
+		AssertUtils.assertNotEmpty(data);
 		final Object source = data instanceof Collection ? ConvertUtils.collectionToMap((Collection<?>) data) : Noson.convert(Noson.reversal(data), new NoType<Map<String, Object>>(){});
 		NoelWriter noelWriter = new NoelWriter(new SimpleScanner(document).scan().results())
 				.write(specialDocument -> {

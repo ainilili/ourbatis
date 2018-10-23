@@ -8,7 +8,7 @@ import org.nico.ourbatis.entity.Column;
 import org.nico.ourbatis.entity.Table;
 import org.nico.ourbatis.utils.ArrayUtils;
 import org.nico.ourbatis.utils.AssertUtils;
-import org.nico.ourbatis.utils.ReflactUtils;
+import org.nico.ourbatis.utils.ReflectUtils;
 import org.nico.ourbatis.wrapper.JdbcNameWrapper;
 import org.nico.ourbatis.wrapper.JdbcTypeWrapper;
 import org.nico.ourbatis.wrapper.MapperNameWrapper;
@@ -40,15 +40,15 @@ public class MapperMapping {
 	
 	public Table mappingTable(Class<?> domainClass, String mapperLocations){
 		Table table = new Table();
-		Field[] classFields = ReflactUtils.getFields(domainClass);
+		Field[] classFields = ReflectUtils.getFields(domainClass);
 		List<Column> normalColumns = new ArrayList<Column>(classFields.length);
 		List<Column> primaryColumns = new ArrayList<Column>(classFields.length);
 		List<Column> allColumns = new ArrayList<Column>(classFields.length);
 		if(ArrayUtils.isNotEmpty(classFields)) {
 			for(Field field: classFields) {
-				if(! ReflactUtils.isRenderIgnore(field)) {
+				if(! ReflectUtils.isRenderIgnore(field)) {
 					Column column = mappingColumnEntity(field);
-					if(ReflactUtils.isRenderPrimary(field)){
+					if(ReflectUtils.isRenderPrimary(field)){
 						primaryColumns.add(column);
 					}else{
 						normalColumns.add(column);
@@ -57,8 +57,8 @@ public class MapperMapping {
 				}
 			}
 		}
-		AssertUtils.assertBlank(primaryColumns, "The entity class needs at least one primary key");
-		AssertUtils.assertBlank(normalColumns, "The entity class needs at least one field");
+		AssertUtils.assertNotEmpty(primaryColumns, "The entity class needs at least one primary key");
+		AssertUtils.assertNotEmpty(normalColumns, "The entity class needs at least one field");
 		
 		table.setTableName(tableNameWrapper.wrapping(domainClass));
 		table.setPrimaryColumns(primaryColumns);
@@ -67,8 +67,8 @@ public class MapperMapping {
 		table.setDomainClass(domainClass);
 		table.setDomainSimpleClassName(domainClass.getSimpleName());
 		table.setDomainClassName(domainClass.getName());
-		if(ReflactUtils.isMapperBy(domainClass)) {
-			table.setMapperClassName(ReflactUtils.getMapperBy(domainClass).getName());
+		if(ReflectUtils.isMapperBy(domainClass)) {
+			table.setMapperClassName(ReflectUtils.getMapperBy(domainClass).getName());
 		}else{
 			table.setMapperClassName(mapperLocations + "." + mapperNameWrapper.wrapping(domainClass));
 		}

@@ -8,7 +8,7 @@ import org.nico.ourbatis.annotation.RenderIgnore;
 import org.nico.ourbatis.annotation.RenderName;
 import org.nico.ourbatis.annotation.RenderPrimary;
 
-public class ReflactUtils {
+public class ReflectUtils {
 
 	public static Field[] getFields(Class<?> clazz){
 		return clazz.getDeclaredFields();
