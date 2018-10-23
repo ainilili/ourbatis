@@ -85,12 +85,15 @@ public class SimpleScanner extends SmartScanner{
 			return Status.ANNOTATION;
 		}
 		String special = SPECIAL_NAMES.get(builder.toString());
-		if(c == ' ' || c == '\t' || c == '>' || cut(2).equals("/>") || (special != null && cut(special.length()).equals(special))) {
+		if(c == ' ' || c == '\t' || c == '\n' || c == '>' || cut(2).equals("/>") || (special != null && cut(special.length()).equals(special))) {
 			String name = builder.toString();
+			if(c == '\n') {
+				name = name.replaceAll("\r", "");
+			}
 			currentDocument.setName(name);
 			tagCount ++;
 			builder.setLength(0);
-			if(c == ' ') {
+			if(c == ' ' || c == '\t' || c == '\n') {
 				return Status.PARAM;
 			}else if(NOTAIL_NAMES.contains(currentDocument.getName())) {
 				currentDocument.setType(DocumentType.SINGLE);
