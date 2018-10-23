@@ -29,7 +29,7 @@ Take the Spring Boot project for example, and add a dependency
 <dependency>
   <groupId>com.smallnico</groupId>
   <artifactId>ourbatis-spring-boot-starter</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
 </dependency>
 ```
 Then configure the package path for your entity class:

@@ -29,7 +29,7 @@
 <dependency>
   <groupId>com.smallnico</groupId>
   <artifactId>ourbatis-spring-boot-starter</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
 </dependency>
 ```
 然后配置一下您的实体类所在的包路径：
