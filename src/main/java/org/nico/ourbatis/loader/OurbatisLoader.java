@@ -80,11 +80,13 @@ public class OurbatisLoader {
 	 * @return This instance 		
 	 */
 	public OurbatisLoader add(Class<?> clazz) {
-		log.debug(">>  Loading " + clazz.getName());
 		Table entityInfo = mapper.mappingTable(clazz, mapperLocations);
 		if(ClassUtils.forName(entityInfo.getMapperClassName()) != null) {
 			NoelResult result = noel.el(baseTemplateContent, entityInfo);
-			mappers.put(entityInfo, result.getFormat());
+			String putCallBack = mappers.putIfAbsent(entityInfo, result.getFormat());
+			if(putCallBack != null) {
+				log.debug(">>  Loading " + clazz.getName());
+			}
 		}
 		return this;
 	}
