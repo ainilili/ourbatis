@@ -29,7 +29,7 @@ Take the Spring Boot project for example, and add a dependency
 <dependency>
   <groupId>com.smallnico</groupId>
   <artifactId>ourbatis-spring-boot-starter</artifactId>
-  <version>1.0.6</version>
+  <version>1.0.7</version>
 </dependency>
 ```
 Then configure the package path for your entity class:
@@ -46,8 +46,12 @@ public interface UserMapper extends SimpleMapper<User, Integer>{}
 ```
 ## Simple
  - [Sprint Boot Case](https://github.com/ainilili/ourbatis-simple)
+
 ## Wiki
  - [Wiki documentation](https://github.com/ainilili/ourbatis/wiki)
+
+## Update
+ - [Update Log](https://github.com/ainilili/ourbatis/UPDATE.md)
 
 ## Feedback
  - ```QQ``` 473048656
