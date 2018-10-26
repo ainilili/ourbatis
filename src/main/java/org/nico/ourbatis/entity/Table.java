@@ -166,4 +166,30 @@ public class Table {
 		this.domainSimpleClassName = domainSimpleClassName;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((domainSimpleClassName == null) ? 0 : domainSimpleClassName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Table other = (Table) obj;
+		if (domainSimpleClassName == null) {
+			if (other.domainSimpleClassName != null)
+				return false;
+		} else if (!domainSimpleClassName.equals(other.domainSimpleClassName))
+			return false;
+		return true;
+	}
+	
+
 }
