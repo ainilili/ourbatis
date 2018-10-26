@@ -51,7 +51,7 @@ public interface UserMapper extends SimpleMapper<User, Integer>{}
  - [Wiki documentation](https://github.com/ainilili/ourbatis/wiki)
 
 ## Update
- - [Update Log](https://github.com/ainilili/ourbatis/UPDATE.md)
+ - [Update Log](https://github.com/ainilili/ourbatis/blob/master/UPDATE.md)
 
 ## Feedback
  - ```QQ``` 473048656

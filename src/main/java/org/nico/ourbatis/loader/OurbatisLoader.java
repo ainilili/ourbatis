@@ -84,7 +84,7 @@ public class OurbatisLoader {
 		if(ClassUtils.forName(entityInfo.getMapperClassName()) != null) {
 			NoelResult result = noel.el(baseTemplateContent, entityInfo);
 			String putCallBack = mappers.putIfAbsent(entityInfo, result.getFormat());
-			if(putCallBack != null) {
+			if(putCallBack == null) {
 				log.debug(">>  Loading " + clazz.getName());
 			}
 		}
