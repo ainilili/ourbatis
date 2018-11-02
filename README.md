@@ -15,7 +15,7 @@
 To make the development of Mybatis more simple and easy, to provide common operation methods and custom entrance, to make the development free from XML, to improve work efficiency and reduce coding time!
 
 Features of **Ourbatis**
-- **1**, simple and convenient, can make Mybatis develop without XML.
+- **1**, simple and convenient, can make Mybatis develop without XML. 
 - **2**, elegant decoupling, complete isolation of generic and custom SQL tags, making maintenance easier.
 - **3**, non-invasive, Mybatis and Ourbatis can be used simultaneously, and the configuration is simple.
 - **4**, flexible and controllable, general template can be customized and extended.
