@@ -37,32 +37,35 @@ public class NoelFormat {
 			Document document = documents.get(index);
 			
 			if(document.getBeforeContent() != null) {
-				String[] contents = document.getBeforeContent().split(System.lineSeparator());
-				for(String content: contents) {
-					builder.append(tab);
-					builder.append(content.trim());
-					builder.append(System.lineSeparator());
+				if(! document.getBeforeContent().isEmpty()) {
+					String[] contents = document.getBeforeContent().split(System.lineSeparator());
+					for(String content: contents) {
+						builder.append(tab);
+						builder.append(content.trim());
+						builder.append(System.lineSeparator());
+					}
 				}
 			}
 			String paramStr = document.getParameterString();
 			if(document.getType() == DocumentType.SINGLE){
 				builder.append(tab);
 				builder.append("<" + document.getName() + " " + paramStr + document.getTail() + ">");
-				builder.append(System.lineSeparator());
 			}else{
 				builder.append(tab);
-				builder.append("<" + document.getName() + " " + paramStr + " >");
-				builder.append(System.lineSeparator());
+				if(paramStr != null && paramStr.length() > 0) {
+					builder.append("<" + document.getName() + " " + paramStr + " >");
+				}else {
+					builder.append("<" + document.getName() + ">");
+				}
+				
 				if(document.getChilds() != null && ! document.getChilds().isEmpty()){
 					format(document.getChilds(), n + 1);
-				}else{
 					builder.append(tab);
+				}else{
 					builder.append(document.getContent());
-					builder.append(System.lineSeparator());
 				}
-				builder.append(tab);
+				
 				builder.append("</"+ document.getName() + ">");
-				builder.append(System.lineSeparator());
 			}
 			if(index == documents.size() - 1) {
 				if(document.getAfterContent() != null) {

@@ -17,7 +17,7 @@ import java.util.Set;
  */
 public class SimpleScanner extends SmartScanner{
 
-	private Document currentDocument;
+private Document currentDocument;
 	
 	private LinkedList<Document> results;
 	
@@ -105,7 +105,8 @@ public class SimpleScanner extends SmartScanner{
 			}else if(cut(2).equals("/>")){
 				currentDocument.setType(DocumentType.SINGLE);
 				currentDocument.setTail("/");
-				return Status.BODY;
+				move(1);
+				return parseFinished();
 			}else{
 				currentDocument.setType(DocumentType.SINGLE);
 				currentDocument.setTail(special);
@@ -165,7 +166,7 @@ public class SimpleScanner extends SmartScanner{
 	protected Status parseBody(char c) {
 		if(c == '<') {
 			String name = currentDocument.getName();
-			if(cut(1 + name.length()).equals("<" + name)) {
+			if(cut(1 + name.length()).equals("<" + name) && ! isClose()) {
 				tagCount ++;
 			}else if(cut(2 + name.length()).equals("</" + name)) {
 				tagCount --;

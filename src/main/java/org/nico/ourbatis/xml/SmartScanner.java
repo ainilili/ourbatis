@@ -39,6 +39,35 @@ public abstract class SmartScanner {
 		return this;
 	}
 	
+	/**
+	 * Find />
+	 * 
+	 * @return
+	 */
+	protected boolean isClose() {
+		char[] chars = value.toCharArray();
+		boolean quoFlag = true;
+		for(int index = pos; index < chars.length; index ++) {
+			char cc = chars[index];
+			if(cc == '\'' || cc == '"') {
+				quoFlag = ! quoFlag;
+			}
+			if(quoFlag) {
+				if(cc == '>') {
+					return false;
+				}
+				if(cc == '/') {
+					if(index < chars.length - 1) {
+						if(chars[index + 1] == '>') {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 	protected abstract Status parseStart(char c);
 	
 	protected abstract Status parseHead(char c);

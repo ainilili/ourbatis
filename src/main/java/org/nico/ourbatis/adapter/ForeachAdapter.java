@@ -8,7 +8,6 @@ import java.util.Map;
 import org.nico.ourbatis.el.NoelLooper;
 import org.nico.ourbatis.el.NoelRender;
 import org.nico.ourbatis.exception.OurbatisException;
-import org.nico.ourbatis.utils.AssertUtils;
 import org.nico.ourbatis.utils.StringUtils;
 import org.nico.ourbatis.xml.Document;
 

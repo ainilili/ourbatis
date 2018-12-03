@@ -11,6 +11,7 @@ import org.nico.ourbatis.utils.AssertUtils;
 import org.nico.ourbatis.utils.ConvertUtils;
 import org.nico.ourbatis.xml.SimpleScanner;
 
+
 /**
  * Noel is a nifty hypertext template parsing tool that USES simple XML parsing 
  * {@link SimpleScanner} to explain special tags defined in the template
@@ -20,6 +21,7 @@ import org.nico.ourbatis.xml.SimpleScanner;
 public class Noel {
 	
 	private NoelRender render;
+	
 	
 	public Noel() {
 		this(Ourbatis.prefix, Ourbatis.suffix);
